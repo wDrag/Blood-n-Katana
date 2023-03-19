@@ -2,6 +2,7 @@
 #include "Graphics/TextureManager.h"
 #include "Physics/Transform.h"
 #include "Characters/Samurai.h"
+#include "Inputs/Input.h"
 
 Engine* Engine::s_Instance = nullptr;
 Samurai* player = nullptr;
@@ -23,8 +24,18 @@ bool Engine::Init(){
         SDL_Log("Failed to create renderer: %s", SDL_GetError());
         return false;
     }
-    TextureManager::getInstance()->Load("src/resources/Samurai/Attack_1.png", "player");
-    player = new Samurai(new Properties("player", 128, 128, 100, 100));
+    TextureManager::getInstance() -> Load("src/resources/Samurai/Idle.png", "player_Idle");
+    TextureManager::getInstance() -> Load("src/resources/Samurai/Walk.png", "player_Walk");
+    TextureManager::getInstance() -> Load("src/resources/Samurai/Run.png", "player_Run");
+    TextureManager::getInstance() -> Load("src/resources/Samurai/Attack_1.png", "player_Attack1");
+    TextureManager::getInstance() -> Load("src/resources/Samurai/Attack_2.png", "player_Attack2");
+    TextureManager::getInstance() -> Load("src/resources/Samurai/Attack_3.png", "player_Attack3");
+    TextureManager::getInstance() -> Load("src/resources/Samurai/Jump.png", "player_Jump");
+    TextureManager::getInstance() -> Load("src/resources/Samurai/Protection.png", "player_Protect");
+    
+   
+    player = new Samurai(new Properties("player_Idle", 128, 128, 100, 100));
+
     return m_isRunning = true;
 }
 
@@ -50,21 +61,10 @@ void Engine::Update(){
 void Engine::Render(){
     SDL_SetRenderDrawColor(m_Renderer, 203, 195, 227, 255);
     SDL_RenderClear(m_Renderer);
-    // TextureManager::getInstance() -> Draw("player", 100, 100, 128, 128);
-    player -> Draw();
+    
+    player ->Draw();
     SDL_RenderPresent(m_Renderer);
-
 }
 void Engine::Events(){
-    SDL_Event event;
-    while (SDL_PollEvent(&event)){
-        switch (event.type){
-            case SDL_QUIT:
-                Quit();
-                break;
-            default:
-                break;
-        }
-    }
-
+    Input::getInstance() -> Listen();
 }

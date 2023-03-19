@@ -2,6 +2,8 @@
 #define SAMURAI_H
 
 #include "Characters/Character.h"
+#include "Animation/AnimationHandler.h"
+#include "Physics/RigidBody.h"
 
 class Samurai : public Character{
     public:
@@ -9,9 +11,20 @@ class Samurai : public Character{
         virtual void Draw();
         virtual void Update(float dt);
         virtual void Clean();
+        void WalkLeft();
+        void WalkRight();
+        void Idling();
+        void Jump();
+        void Protect();
+        void Attack1();
+        void Attack2();
+        void Attack3();
+        
     private:
-        int m_Row, m_Frame, m_FrameCount;
-        int m_AnimSpeed;
+        AnimationHandler* m_Animation;
+        RigidBody* m_RigidBody;
+        bool m_FaceDir;//0 for left, 1 for Right 
+
 };
 
 #endif

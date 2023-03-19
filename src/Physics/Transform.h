@@ -11,7 +11,6 @@ class Transform{
             X = x;
             Y = y;
         }
-    private:
         inline void TranslateX(float x){
             X += x;
         }
