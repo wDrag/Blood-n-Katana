@@ -4,6 +4,7 @@
 #include "Characters/Character.h"
 #include "Animation/AnimationHandler.h"
 #include "Physics/RigidBody.h"
+#include <string>
 
 class Samurai : public Character{
     public:

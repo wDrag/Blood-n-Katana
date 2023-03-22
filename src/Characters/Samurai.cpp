@@ -16,7 +16,6 @@ SDL_RendererFlip Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
 Samurai::Samurai(Properties* props) : Character(props){
     m_RigidBody = new RigidBody();
     m_Animation = new AnimationHandler();
-    m_Animation -> SetProps(m_TextureID, 1, 9, 100);
 }
 
 void Samurai::Draw(){
@@ -26,22 +25,24 @@ void Samurai::Draw(){
 void Samurai::WalkLeft(){
     m_FaceDir = 0;
     m_Animation -> SetProps("player_Walk", 1, 9, 100, Dir[m_FaceDir]);
+    // m_RigidBody -> UnsetForce();
     m_RigidBody -> ApplyForceX(4 * left);
 }
 
 void Samurai::WalkRight(){
     m_FaceDir = 1;
     m_Animation -> SetProps("player_Walk", 1, 9, 100, Dir[m_FaceDir]);
+    // m_RigidBody -> UnsetForce();
     m_RigidBody -> ApplyForceX(4 * right);
 }
 
 void Samurai::Jump(){
     m_Animation -> SetProps("player_Jump", 1, 9, 100, Dir[m_FaceDir]);
-    m_RigidBody -> ApplyForceY(20 * up);
+    m_RigidBody -> ApplyForceY(15 * up);
 }
 
 void Samurai::Protect(){
-    m_Animation -> SetProps("player_Protect", 1, 2, 100, Dir[m_FaceDir]);
+    m_Animation -> SetProps("player_Protect", 1, 2, 400, Dir[m_FaceDir]);
     m_RigidBody -> UnsetForce();
 }
 
@@ -117,10 +118,10 @@ void Samurai::Update(float dt){
         Attack3();
     }
 
-    m_RigidBody -> Update(0.5);
+    m_RigidBody -> Update(dt);
     m_Transform -> TranslateX(m_RigidBody -> Position().X);
-    m_RigidBody -> setGravity(0);
-    m_Transform -> TranslateY(m_RigidBody -> Position().Y);
+    // m_RigidBody -> setGravity(0);
+    // m_Transform -> TranslateY(m_RigidBody -> Position().Y);
     m_Animation -> Update();
 }
 

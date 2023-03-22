@@ -3,6 +3,7 @@
 #include "Physics/Transform.h"
 #include "Characters/Samurai.h"
 #include "Inputs/Input.h"
+#include "Timer/Timer.h"
 
 Engine* Engine::s_Instance = nullptr;
 Samurai* player = nullptr;
@@ -34,7 +35,7 @@ bool Engine::Init(){
     TextureManager::getInstance() -> Load("src/resources/Samurai/Protection.png", "player_Protect");
     
    
-    player = new Samurai(new Properties("player_Idle", 128, 128, 100, 100));
+    player = new Samurai(new Properties("player_Idle", 128, 128, 100, 300));
 
     return m_isRunning = true;
 }
@@ -56,7 +57,8 @@ void Engine::Quit(){
 }
 
 void Engine::Update(){
-    player -> Update(0);
+    float dt = Timer::getInstance() -> getDeltaTime();
+    player -> Update(dt);
 }
 void Engine::Render(){
     SDL_SetRenderDrawColor(m_Renderer, 203, 195, 227, 255);
