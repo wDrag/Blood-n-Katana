@@ -14,6 +14,7 @@ class AnimationHandler{
     private:
         int m_SpriteRow, m_SpriteFrame;
         int m_AnimSpeed, m_FrameCount;
+        int m_FrameOffset;
         std::string m_textureID;
         SDL_RendererFlip m_Flip;
 };

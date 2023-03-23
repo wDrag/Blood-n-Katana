@@ -14,8 +14,8 @@ class Timer{
 
     private:
         static Timer* s_Instance;
-        std::chrono::high_resolution_clock::time_point m_StartTime;
-        std::chrono::duration<float> m_DeltaTime;
+        float m_StartTime;
+        float m_DeltaTime;
 };
 
 #endif
