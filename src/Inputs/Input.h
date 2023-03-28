@@ -12,7 +12,7 @@ class Input{
         void Listen();
         bool GetKeyDown(SDL_Scancode key);
     private:
-        Input();
+        Input(){};
 
         void KeyUp();
         void KeyDown();

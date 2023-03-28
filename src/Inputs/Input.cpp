@@ -3,10 +3,6 @@
 
 Input* Input::s_Instance = nullptr;
 
-Input::Input(){
-
-}
-
 void Input::Listen(){
     SDL_Event event;
 
