@@ -11,7 +11,7 @@
 #define down  1
 
 
-SDL_RendererFlip Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
+SDL_RendererFlip m_Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
 
 Samurai::Samurai(Properties* props) : Character(props){
     m_RigidBody = new RigidBody();
@@ -24,45 +24,61 @@ void Samurai::Draw(){
 
 void Samurai::WalkLeft(){
     m_FaceDir = 0;
-    m_Animation -> SetProps("player_Walk", 1, 9, 100, Dir[m_FaceDir]);
+    m_State = "Walking";
+    m_Animation -> SetProps("player_Walk", 1, 9, 100, m_Dir[m_FaceDir]);
+    m_Animation -> AnimationStart();
     // m_RigidBody -> UnsetForce();
     m_RigidBody -> ApplyForceX(4 * left);
 }
 
 void Samurai::WalkRight(){
     m_FaceDir = 1;
-    m_Animation -> SetProps("player_Walk", 1, 9, 100, Dir[m_FaceDir]);
+    m_State = "Walking";
+    m_Animation -> SetProps("player_Walk", 1, 9, 100, m_Dir[m_FaceDir]);
+    m_Animation -> AnimationStart();
     // m_RigidBody -> UnsetForce();
     m_RigidBody -> ApplyForceX(4 * right);
 }
 
 void Samurai::Jump(){
-    m_Animation -> SetProps("player_Jump", 1, 9, 100, Dir[m_FaceDir]);
+    m_State = "Jumping";
+    m_Animation -> SetProps("player_Jump", 1, 9, 100, m_Dir[m_FaceDir]);
+    m_Animation -> AnimationStart();
     m_RigidBody -> ApplyForceY(15 * up);
 }
 
 void Samurai::Protect(){
-    m_Animation -> SetProps("player_Protect", 1, 2, 400, Dir[m_FaceDir]);
+    m_State = "Protecting";
+    m_Animation -> SetProps("player_Protect", 1, 2, 400, m_Dir[m_FaceDir]);
+    m_Animation -> AnimationStart();
     m_RigidBody -> UnsetForce();
 }
 
 void Samurai::Idling(){
-    m_Animation -> SetProps("player_Idle", 1, 6, 100, Dir[m_FaceDir]);
+    m_State = "Idling";
+    m_Animation -> SetProps("player_Idle", 1, 6, 100, m_Dir[m_FaceDir]);
+    m_Animation -> AnimationStart();
     m_RigidBody -> UnsetForce();
 }
 
 void Samurai::Attack1(){
-    m_Animation -> SetProps("player_Attack1", 1, 4, 100, Dir[m_FaceDir]);
+    m_State = "Attacking";
+    m_Animation -> SetProps("player_Attack1", 1, 4, 100, m_Dir[m_FaceDir]);
+    m_Animation -> AnimationStart();
     m_RigidBody -> UnsetForce();
 }
 
 void Samurai::Attack2(){
-    m_Animation -> SetProps("player_Attack2", 1, 5, 100, Dir[m_FaceDir]);
+    m_State = "Attacking";
+    m_Animation -> SetProps("player_Attack2", 1, 5, 100, m_Dir[m_FaceDir]);
+    m_Animation -> AnimationStart();
     m_RigidBody -> UnsetForce();
 }
 
 void Samurai::Attack3(){
-    m_Animation -> SetProps("player_Attack3", 1, 4, 100, Dir[m_FaceDir]);
+    m_State = "Attacking";
+    m_Animation -> SetProps("player_Attack3", 1, 4, 100, m_Dir[m_FaceDir]);
+    m_Animation -> AnimationStart();
     m_RigidBody -> UnsetForce();
 }
 
@@ -122,7 +138,7 @@ void Samurai::Update(float dt){
     m_Transform -> TranslateX(m_RigidBody -> Position().X);
     // m_RigidBody -> setGravity(0);
     // m_Transform -> TranslateY(m_RigidBody -> Position().Y);
-    m_Animation -> Update();
+    m_Animation -> Update(dt);
 }
 
 void Samurai::Clean(){

@@ -36,7 +36,7 @@ bool Engine::Init(){
     
    
     player = new Samurai(new Properties("player_Idle", 128, 128, 100, 300));
-
+     
     return m_isRunning = true;
 }
 
