@@ -4,7 +4,7 @@
 #include <chrono>
 
 const int TARGET_FPS = 60;
-const int TARGET_DELTATIME = 1.5f;
+const int TARGET_DELTATIME = 15.0f;
 
 class Timer{
     public:

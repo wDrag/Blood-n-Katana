@@ -25,6 +25,8 @@ class Samurai : public Character{
         AnimationHandler* m_Animation;
         RigidBody* m_RigidBody;
         bool m_FaceDir;//0 for left, 1 for Right 
+        SDL_RendererFlip m_Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
+        std::string m_State;
 
 };
 

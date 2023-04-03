@@ -3,8 +3,10 @@
 
 #include "Physics/Vector2D.h"
 
+//global modifiers 0.5
+
 #define UNI_MASS 1.0f
-#define GRAVITY 9.8f;
+#define GRAVITY 4.9f
 
 class RigidBody{
     public:
