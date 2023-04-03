@@ -11,6 +11,7 @@ class Input{
 
         void Listen();
         bool GetKeyDown(SDL_Scancode key);
+        bool NoKeyDown();
     private:
         Input();
 

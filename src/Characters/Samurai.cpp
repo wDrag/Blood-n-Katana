@@ -23,62 +23,69 @@ void Samurai::Draw(){
 }
 
 void Samurai::WalkLeft(){
-    m_FaceDir = 0;
+    if (m_State != "Walking")
+        m_Animation -> AnimationStart();
     m_State = "Walking";
     m_Animation -> SetProps("player_Walk", 1, 9, 100, m_Dir[m_FaceDir]);
-    m_Animation -> AnimationStart();
     // m_RigidBody -> UnsetForce();
-    m_RigidBody -> ApplyForceX(4 * left);
+    m_RigidBody -> ApplyForceX(3 * left);
 }
 
 void Samurai::WalkRight(){
-    m_FaceDir = 1;
+    if (m_State != "Walking")
+        m_Animation -> AnimationStart();
     m_State = "Walking";
     m_Animation -> SetProps("player_Walk", 1, 9, 100, m_Dir[m_FaceDir]);
-    m_Animation -> AnimationStart();
     // m_RigidBody -> UnsetForce();
-    m_RigidBody -> ApplyForceX(4 * right);
+    m_RigidBody -> ApplyForceX(3 * right);
 }
 
 void Samurai::Jump(){
+    if (m_State != "Jumping")
+        m_Animation -> AnimationStart();
     m_State = "Jumping";
     m_Animation -> SetProps("player_Jump", 1, 9, 100, m_Dir[m_FaceDir]);
-    m_Animation -> AnimationStart();
-    m_RigidBody -> ApplyForceY(15 * up);
+    m_RigidBody -> UnsetForce();
+    m_RigidBody -> ApplyForceY(7 * up);
 }
 
 void Samurai::Protect(){
+    if (m_State != "Protecting")
+        m_Animation -> AnimationStart();
     m_State = "Protecting";
     m_Animation -> SetProps("player_Protect", 1, 2, 400, m_Dir[m_FaceDir]);
-    m_Animation -> AnimationStart();
     m_RigidBody -> UnsetForce();
 }
 
 void Samurai::Idling(){
+    if (m_State != "Idling")
+        m_Animation -> AnimationStart();
     m_State = "Idling";
     m_Animation -> SetProps("player_Idle", 1, 6, 100, m_Dir[m_FaceDir]);
-    m_Animation -> AnimationStart();
     m_RigidBody -> UnsetForce();
 }
 
 void Samurai::Attack1(){
-    m_State = "Attacking";
+    if (m_State != "Attacking1")
+        m_Animation -> AnimationStart();
+    m_State = "Attacking1";
     m_Animation -> SetProps("player_Attack1", 1, 4, 100, m_Dir[m_FaceDir]);
-    m_Animation -> AnimationStart();
     m_RigidBody -> UnsetForce();
 }
 
 void Samurai::Attack2(){
-    m_State = "Attacking";
-    m_Animation -> SetProps("player_Attack2", 1, 5, 100, m_Dir[m_FaceDir]);
+    if (m_State != "Attacking2")
     m_Animation -> AnimationStart();
+    m_State = "Attacking2";
+    m_Animation -> SetProps("player_Attack2", 1, 5, 100, m_Dir[m_FaceDir]);
     m_RigidBody -> UnsetForce();
 }
 
 void Samurai::Attack3(){
-    m_State = "Attacking";
+    if (m_State != "Attacking3")
+        m_Animation -> AnimationStart();
+    m_State = "Attacking3";
     m_Animation -> SetProps("player_Attack3", 1, 4, 100, m_Dir[m_FaceDir]);
-    m_Animation -> AnimationStart();
     m_RigidBody -> UnsetForce();
 }
 
@@ -86,22 +93,26 @@ void Samurai::Update(float dt){
 
 
     //move
-
-    Idling();
-
+    if (Input::getInstance() -> NoKeyDown()){
+        Idling();
+    }
     if (Input::getInstance() -> GetKeyDown(SDL_SCANCODE_LEFT)){
+        m_FaceDir = 0;
         WalkLeft();
     }
     
     if (Input::getInstance() -> GetKeyDown(SDL_SCANCODE_A)){
+        m_FaceDir = 0;
         WalkLeft();
     }
     
     if (Input::getInstance() -> GetKeyDown(SDL_SCANCODE_RIGHT)){
+        m_FaceDir = 1;
         WalkRight();
     }
     
     if (Input::getInstance() -> GetKeyDown(SDL_SCANCODE_D)){
+        m_FaceDir = 1;
         WalkRight();
     }
     
