@@ -8,8 +8,8 @@ void AnimationHandler::Update(float dt){
 }
 
 bool AnimationHandler::ACycle(){
+    SDL_Log("%d", m_FrameCount);
     if (m_FrameCount == m_FrameNum){
-        m_FrameCount = 1e3 + 7;
         return true;
     }
     return false;
@@ -28,4 +28,7 @@ void AnimationHandler::SetProps(std::string textureID, int spriteRow, int FrameN
     m_FrameNum = FrameNum;
     m_AnimSpeed = animSpeed;
     m_Flip = flip; 
+}
+void AnimationHandler::SetDir(SDL_RendererFlip flip){
+    m_Flip = flip;
 }

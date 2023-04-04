@@ -10,6 +10,7 @@ class AnimationHandler{
 
         void Update(float dt);
         void Draw(float x, float y, int spriteWidth, int spriteHeight);
+        void SetDir(SDL_RendererFlip Dir);
         void SetProps(std::string textureID, int spriteRow, int FrameCount, int animSpeed, SDL_RendererFlip flip = SDL_FLIP_NONE);
         void AnimationStart();
         bool ACycle();

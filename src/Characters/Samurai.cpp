@@ -10,12 +10,10 @@
 #define up   -1
 #define down  1
 
-
-SDL_RendererFlip m_Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
-
 Samurai::Samurai(Properties* props) : Character(props){
     m_RigidBody = new RigidBody();
     m_Animation = new AnimationHandler();
+    m_FaceDir = 1;
     Idling();
 }
 
@@ -24,34 +22,52 @@ void Samurai::Draw(){
 }
 
 void Samurai::WalkLeft(){
-    m_RigidBody -> ApplyForceX(3 * left);
+    // m_Animation -> SetDir(m_Dir[m_FaceDir]);
+    if (m_State == "Attacking1" || m_State == "Attacking2" || m_State == "Attacking3"){
+        if (!m_Animation -> ACycle())
+            return;
+    }
     if (m_State != "Walking")
         m_Animation -> AnimationStart();
     m_State = "Walking";
     m_Animation -> SetProps("player_Walk", 1, 9, 100, m_Dir[m_FaceDir]);
+    m_RigidBody -> ApplyForceX(3 * left);
     // m_RigidBody -> UnsetForce();
 }
 
 void Samurai::WalkRight(){
-    m_RigidBody -> ApplyForceX(3 * right);
+    // m_Animation -> SetDir(m_Dir[m_FaceDir]);
+    if (m_State == "Attacking1" || m_State == "Attacking2" || m_State == "Attacking3"){
+        if (!m_Animation -> ACycle())
+            return;
+    }
     if (m_State != "Walking")
         m_Animation -> AnimationStart();
     m_State = "Walking";
     m_Animation -> SetProps("player_Walk", 1, 9, 100, m_Dir[m_FaceDir]);
+    m_RigidBody -> ApplyForceX(3 * right);
     // m_RigidBody -> UnsetForce();
 }
 
 void Samurai::Jump(){
-    m_RigidBody -> ApplyForceY(7 * up);
+    if (m_State == "Attacking1" || m_State == "Attacking2" || m_State == "Attacking3"){
+        if (!m_Animation -> ACycle())
+            return;
+    }
     if (m_State != "Jumping")
         m_Animation -> AnimationStart();
     m_State = "Jumping";
     m_Animation -> SetProps("player_Jump", 1, 9, 100, m_Dir[m_FaceDir]);
-    m_RigidBody -> UnsetForce();
+    // m_RigidBody -> UnsetForce();
+    m_RigidBody -> ApplyForceY(7 * up);
 }
 
 void Samurai::Protect(){
     m_RigidBody -> UnsetForce();
+    if (m_State == "Attacking1" || m_State == "Attacking2" || m_State == "Attacking3"){
+        if (!m_Animation -> ACycle())
+            return;
+    }
     if (m_State != "Protecting")
         m_Animation -> AnimationStart();
     m_State = "Protecting";
@@ -71,6 +87,8 @@ void Samurai::Idling(){
 }
 
 void Samurai::Attack1(){
+    if (m_Animation -> ACycle())
+            return;
     m_RigidBody -> UnsetForce();
     if (m_State != "Attacking1")
         m_Animation -> AnimationStart();
@@ -79,6 +97,8 @@ void Samurai::Attack1(){
 }
 
 void Samurai::Attack2(){
+    if (m_Animation -> ACycle())
+            return;
     m_RigidBody -> UnsetForce();
     if (m_State != "Attacking2")
       m_Animation -> AnimationStart();
@@ -87,6 +107,8 @@ void Samurai::Attack2(){
 }
 
 void Samurai::Attack3(){
+    if (m_Animation -> ACycle())
+            return;
     m_RigidBody -> UnsetForce();
     if (m_State != "Attacking3")
         m_Animation -> AnimationStart();
