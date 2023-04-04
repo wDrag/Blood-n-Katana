@@ -87,8 +87,6 @@ void Samurai::Idling(){
 }
 
 void Samurai::Attack1(){
-    if (m_Animation -> ACycle())
-            return;
     m_RigidBody -> UnsetForce();
     if (m_State != "Attacking1")
         m_Animation -> AnimationStart();
@@ -97,8 +95,6 @@ void Samurai::Attack1(){
 }
 
 void Samurai::Attack2(){
-    if (m_Animation -> ACycle())
-            return;
     m_RigidBody -> UnsetForce();
     if (m_State != "Attacking2")
       m_Animation -> AnimationStart();
@@ -107,8 +103,6 @@ void Samurai::Attack2(){
 }
 
 void Samurai::Attack3(){
-    if (m_Animation -> ACycle())
-            return;
     m_RigidBody -> UnsetForce();
     if (m_State != "Attacking3")
         m_Animation -> AnimationStart();
