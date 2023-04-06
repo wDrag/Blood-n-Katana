@@ -12,16 +12,17 @@ class Input{
         void Listen();
         bool GetKeyDown(SDL_Scancode key);
         bool NoKeyDown();
-    private:
-        Input(){};
 
+        void LockKey();
+        void UnlockKey();
+
+    private:
+        static bool m_KeyLocked;
+        Input(){};
         void KeyUp();
         void KeyDown();
-
-        const Uint8* m_Keystates;
-
         static Input* s_Instance;
-
+        const Uint8* m_Keystates;
 };  
 
 #endif

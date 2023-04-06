@@ -7,9 +7,23 @@ void AnimationHandler::Update(float dt){
     if (tmp != m_SpriteFrame) m_FrameCount ++;
 }
 
+bool AnimationHandler::UnderCycle(){
+    if (m_FrameCount < m_FrameNum){
+        return true;
+    }
+    return false;
+}
+
 bool AnimationHandler::ACycle(){
     SDL_Log("%d", m_FrameCount);
     if (m_FrameCount == m_FrameNum){
+        return true;
+    }
+    return false;
+}
+
+bool AnimationHandler::OverCycle(){
+    if (m_FrameCount > m_FrameNum){
         return true;
     }
     return false;

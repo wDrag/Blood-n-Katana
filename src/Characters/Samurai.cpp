@@ -14,6 +14,7 @@ Samurai::Samurai(Properties* props) : Character(props){
     m_RigidBody = new RigidBody();
     m_Animation = new AnimationHandler();
     m_FaceDir = 1;
+    Input::getInstance() -> UnlockKey();
     Idling();
 }
 
@@ -79,6 +80,7 @@ void Samurai::Idling(){
     if (m_State == "Attacking1" || m_State == "Attacking2" || m_State == "Attacking3"){
         if (!m_Animation -> ACycle())
             return;
+        else Input :: getInstance() -> UnlockKey();
     }
     if (m_State != "Idling")
         m_Animation -> AnimationStart();
@@ -88,31 +90,40 @@ void Samurai::Idling(){
 
 void Samurai::Attack1(){
     m_RigidBody -> UnsetForce();
-    if (m_State != "Attacking1")
+    if (m_State != "Attacking1"){
+        Input::getInstance() -> LockKey();
         m_Animation -> AnimationStart();
+    }
     m_State = "Attacking1";
     m_Animation -> SetProps("player_Attack1", 1, 4, 100, m_Dir[m_FaceDir]);
 }
 
 void Samurai::Attack2(){
     m_RigidBody -> UnsetForce();
-    if (m_State != "Attacking2")
-      m_Animation -> AnimationStart();
+    if (m_State != "Attacking2"){
+        Input::getInstance() -> LockKey();
+        m_Animation -> AnimationStart();
+    }
     m_State = "Attacking2";
     m_Animation -> SetProps("player_Attack2", 1, 5, 150, m_Dir[m_FaceDir]);
 }
 
 void Samurai::Attack3(){
     m_RigidBody -> UnsetForce();
-    if (m_State != "Attacking3")
+    if (m_State != "Attacking3"){
+        Input::getInstance() -> LockKey();
         m_Animation -> AnimationStart();
+    }
     m_State = "Attacking3";
     m_Animation -> SetProps("player_Attack3", 1, 4, 100, m_Dir[m_FaceDir]);
 }
 
 void Samurai::Update(float dt){
-
-
+    if (m_State == "Attacking1" || m_State == "Attacking2" || m_State == "Attacking3"){
+        if (m_Animation -> OverCycle()){
+            Input::getInstance() -> UnlockKey();
+        }    
+    }
     //move
     if (Input::getInstance() -> NoKeyDown()){
         Idling();

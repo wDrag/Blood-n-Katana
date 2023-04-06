@@ -14,6 +14,8 @@ class AnimationHandler{
         void SetProps(std::string textureID, int spriteRow, int FrameCount, int animSpeed, SDL_RendererFlip flip = SDL_FLIP_NONE);
         void AnimationStart();
         bool ACycle();
+        bool UnderCycle();
+        bool OverCycle();
     private:
         int m_SpriteRow, m_SpriteFrame;
         int m_AnimSpeed, m_FrameCount;
