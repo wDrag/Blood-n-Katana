@@ -15,8 +15,14 @@ bool AnimationHandler::UnderCycle(){
 }
 
 bool AnimationHandler::ACycle(){
-    SDL_Log("%d", m_FrameCount);
     if (m_FrameCount == m_FrameNum){
+        return true;
+    }
+    return false;
+}
+
+bool AnimationHandler::NCycle(int num){
+    if (m_FrameCount == m_FrameNum * num){
         return true;
     }
     return false;

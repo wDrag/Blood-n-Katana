@@ -16,6 +16,7 @@ class AnimationHandler{
         bool ACycle();
         bool UnderCycle();
         bool OverCycle();
+        bool NCycle(int num);
     private:
         int m_SpriteRow, m_SpriteFrame;
         int m_AnimSpeed, m_FrameCount;
