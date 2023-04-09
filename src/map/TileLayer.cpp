@@ -5,12 +5,12 @@ TileLayer::TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, 
     m_RowCount = rowcount;
     m_ColCount = colcount;
     m_TileMap = tilemap;
-    m_TileSets = tilesets;
+    m_Tilesets = tilesets;
 }
 
-virtual void TileLayer::Render(){
+void TileLayer::Render(){
 
 }
-virtual void TileLayer::Update(){
+void TileLayer::Update(){
 
 }
