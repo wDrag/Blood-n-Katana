@@ -185,5 +185,5 @@ void Samurai::Update(float dt){
 }
 
 void Samurai::Clean(){
-    TextureManager::getInstance() -> Clean();
+    TextureManager::GetInstance() -> Clean();
 }

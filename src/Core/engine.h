@@ -4,12 +4,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "Map/GameMap.h"
+
 #define SCREEN_WIDTH 960
 #define SCREEN_HEIGHT 640
 
 class Engine{
     public:
-        static Engine* getInstance(){
+        static Engine* GetInstance(){
             return s_Instance = (s_Instance != nullptr) ? s_Instance : new Engine();
         }
         bool Init();

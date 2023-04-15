@@ -4,17 +4,19 @@
 // #include <iostream>
 
 signed main( int argc, char *argv[] ){
-    Engine::getInstance() -> Init();
-    while (Engine::getInstance() -> isRunning()){
+    // std::cout << "dead inside\n";
+    Engine::GetInstance() -> Init();
+    // std::cout << "wut \n";
+    while (Engine::GetInstance() -> isRunning()){
         Timer::getInstance() -> Tick();
         // std::cout << "alive 1 \n";
-        Engine::getInstance() -> Events();
+        Engine::GetInstance() -> Events();
         // std::cout << "alive 2 \n";
-        Engine::getInstance() -> Update();
+        Engine::GetInstance() -> Update();
         // std::cout << "alive 3 \n";
-        Engine::getInstance() -> Render();
+        Engine::GetInstance() -> Render();
         // std::cout << "alive 4 \n";
     }
-    Engine::getInstance() -> Clean();
+    Engine::GetInstance() -> Clean();
     return 0;
 }

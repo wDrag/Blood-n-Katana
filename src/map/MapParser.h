@@ -9,10 +9,10 @@
 
 class MapParser{
     public:
-        bool Load(std::string id, std::string source);
+        bool Load(std::string id = "MAP", std::string source = "src/resources/Map/Map1.tmx");
         void Clean();
 
-        inline GameMap* GetMaps(std::string id){return m_MapDict[id];}
+        inline GameMap* GetMap(std::string id){return m_MapDict[id];}
         inline static MapParser* GetInstance() {return s_Instance = (s_Instance != nullptr) ? s_Instance : new MapParser();}
         
     private:

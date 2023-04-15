@@ -1,16 +1,20 @@
 #include "Map/MapParser.h"
 
+// #include <iostream>
+
 MapParser* MapParser::s_Instance = nullptr;
 
 bool MapParser::Load(std::string id, std::string source){
-    id = "lv1";
-    source = "src/resources/Map/Map1.tmx";
     //currently only use 1 map and 1 lv
     return Parse(id, source);
 }
 void MapParser::Clean(){
-
-}
+    std::map<std::string, GameMap*> :: iterator it;
+        for (it = m_MapDict.begin(); it != m_MapDict.end(); it++){
+            delete it -> second;
+        }
+    m_MapDict.clear();
+}   
 
 bool MapParser::Parse(std::string id, std::string source){
     TiXmlDocument xml;
@@ -26,7 +30,6 @@ bool MapParser::Parse(std::string id, std::string source){
     root -> Attribute("width", &colcount);
     root -> Attribute("height",&rowcount);
     root -> Attribute("tilewidth", &tilesize);
-
     TilesetList tilesets;
     for (TiXmlElement* e = root -> FirstChildElement(); e!= nullptr; e = e -> NextSiblingElement()){
         if (e -> Value() == std::string("tileset")){
@@ -53,12 +56,11 @@ Tileset MapParser::ParseTileset(TiXmlElement* xmlTileset){
     xmlTileset -> Attribute("firstgid", &tileset.FirstID);
     xmlTileset -> Attribute("tilecount", &tileset.TileCount);
     tileset.LastID = tileset.FirstID + tileset.TileCount - 1;
-
     xmlTileset -> Attribute("columns", &tileset.ColCount);
-    tileset.RowCount = tileset.TileCount / tileset.ColCount;
+    tileset.TileCount / tileset.ColCount;
     xmlTileset -> Attribute("tilewidth", &tileset.TileSize);
-
     TiXmlElement* image = xmlTileset -> FirstChildElement();
+    // std::cout << image -> Attribute("source") << '\n';
     tileset.Source = image -> Attribute("source");
     return tileset;    
 }
@@ -75,8 +77,8 @@ TileLayer* MapParser::ParseTileLayer (TiXmlElement* xmlLayer, TilesetList tilese
     std::string id;
 
     TileMap tilemap(rowcount, std::vector<int>(colcount, 0));
-    for(int row = 0; row <= rowcount; row++){
-        for (int col = 0; col <= colcount; col++){
+    for(int row = 0; row < rowcount; row++){
+        for (int col = 0; col < colcount; col++){
             getline(iss, id, ',');
             std::stringstream convertor(id);
             convertor >> tilemap[row][col];
