@@ -125,9 +125,16 @@ void Samurai::Update(float dt){
         }    
     }
     //move
+    ////////////////////////why?//
+
     if (Input::getInstance() -> NoKeyDown()){
         Idling();
     }
+    SDL_Log("where?");
+    ///////////////////////////
+
+
+
     if (Input::getInstance() -> GetKeyDown(SDL_SCANCODE_LEFT)){
         m_FaceDir = 0;
         WalkLeft();
@@ -176,7 +183,6 @@ void Samurai::Update(float dt){
     if (Input::getInstance() -> GetKeyDown(SDL_SCANCODE_L)){
         Attack3();
     }
-
     m_RigidBody -> Update(dt);
     m_Transform -> TranslateX(m_RigidBody -> Position().X);
     // m_RigidBody -> setGravity(0);

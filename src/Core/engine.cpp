@@ -8,7 +8,7 @@
 
 Engine* Engine::s_Instance = nullptr;
 Samurai* player = nullptr;
-GameMap* m_LevelMap = nullptr;
+
 
 bool Engine::Init(){
     if (SDL_Init(SDL_INIT_VIDEO)!= 0 && IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0){
@@ -16,7 +16,9 @@ bool Engine::Init(){
         return false;
     }
 
-    m_Window = SDL_CreateWindow("BND", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    SDL_WindowFlags fullscreen = (SDL_WindowFlags)(SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+
+    m_Window = SDL_CreateWindow("BND", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, fullscreen);
     if (m_Window == nullptr){
         SDL_Log("Failed to create window: %s", SDL_GetError());
         return false;
@@ -45,6 +47,8 @@ bool Engine::Init(){
    
     player = new Samurai(new Properties("player_Idle", 128, 128, 100, 300));
 
+    // TextureManager::GetInstance() -> checkMap();
+
     return m_isRunning = true;
 }
 
@@ -67,7 +71,7 @@ void Engine::Quit(){
 
 void Engine::Update(){
     float dt = Timer::getInstance() -> getDeltaTime();
-    m_LevelMap -> Update();
+    // m_LevelMap -> Update();
     player -> Update(dt);
 }
 void Engine::Render(){
@@ -75,7 +79,7 @@ void Engine::Render(){
     SDL_RenderClear(m_Renderer);
 
     m_LevelMap -> Render();    
-    player ->Draw();
+    player -> Draw();
     SDL_RenderPresent(m_Renderer);
 }
 void Engine::Events(){

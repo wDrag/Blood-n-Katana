@@ -30,6 +30,7 @@ class Engine{
         SDL_Renderer* m_Renderer;
         Engine(){}
         static Engine* s_Instance;
+        GameMap* m_LevelMap;
 };
 
 #endif

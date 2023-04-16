@@ -1,5 +1,6 @@
 #include "Graphics/TextureManager.h"
 #include "Core/engine.h"
+// #include <iostream>
 
 TextureManager* TextureManager::s_Instance = nullptr;   
 
@@ -34,7 +35,7 @@ void TextureManager::DrawFrame(std::string id, int x, int y, int width, int heig
 
 void TextureManager::DrawTile(std::string tilesetID, int tileSize, int x, int y, int row, int col, SDL_RendererFlip flip){
     SDL_Rect srcRect = {x, y, tileSize, tileSize};
-    SDL_Rect destRect = {tileSize * col, tileSize * (row - 1), tileSize, tileSize};
+    SDL_Rect destRect = {tileSize * col, tileSize * row, tileSize, tileSize};
     SDL_RenderCopyEx(Engine::GetInstance() -> getRenderer(), m_TextureMap[tilesetID], &srcRect, &destRect, 0, nullptr, flip);
 }
 
@@ -50,3 +51,10 @@ void TextureManager::Clean(){
     }
     m_TextureMap.clear();
 }
+
+// void TextureManager::checkMap(){
+   
+//     for(auto x: m_TextureMap){
+//         std::cout << x.first << '\n';
+//     }
+// }
