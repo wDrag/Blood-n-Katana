@@ -16,13 +16,13 @@ bool Engine::Init(){
         return false;
     }
 
-    SDL_WindowFlags fullscreen = (SDL_WindowFlags)(SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-
-    m_Window = SDL_CreateWindow("BND", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, fullscreen);
+    SDL_WindowFlags WINFLAGS = (SDL_WindowFlags)(SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
+    m_Window = SDL_CreateWindow("BND", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, WINFLAGS);
     if (m_Window == nullptr){
         SDL_Log("Failed to create window: %s", SDL_GetError());
         return false;
     }
+    SDL_SetWindowFullscreen(m_Window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (m_Renderer == nullptr){
@@ -68,6 +68,7 @@ void Engine::Quit(){
     IMG_Quit();
     SDL_Quit();
 }
+
 
 void Engine::Update(){
     float dt = Timer::getInstance() -> getDeltaTime();

@@ -130,7 +130,7 @@ void Samurai::Update(float dt){
     if (Input::getInstance() -> NoKeyDown()){
         Idling();
     }
-    SDL_Log("where?");
+    // SDL_Log("where?");
     ///////////////////////////
 
 
