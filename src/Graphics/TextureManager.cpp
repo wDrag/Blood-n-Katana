@@ -1,5 +1,6 @@
 #include "Graphics/TextureManager.h"
 #include "Core/engine.h"
+#include "Camera/Camera.h"
 // #include <iostream>
 
 TextureManager* TextureManager::s_Instance = nullptr;   
@@ -29,13 +30,15 @@ void TextureManager::Draw(std::string id, int x, int y, int width, int height, S
 
 void TextureManager::DrawFrame(std::string id, int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip){
     SDL_Rect srcRect = {width * frame, height * (row - 1), width, height};
-    SDL_Rect destRect = {x, y, width, height};
+    Vector2D cam = Camera::GetInstance() -> GetPosition();
+    SDL_Rect destRect = {x - (int)cam.X, y - (int)cam.Y, width, height};
     SDL_RenderCopyEx(Engine::GetInstance() -> getRenderer(), m_TextureMap[id], &srcRect, &destRect, 0, nullptr, flip);
 }
 
 void TextureManager::DrawTile(std::string tilesetID, int tileSize, int x, int y, int row, int col, SDL_RendererFlip flip){
     SDL_Rect srcRect = {tileSize * col, tileSize * row, tileSize, tileSize};
-    SDL_Rect destRect = {x * tileSize, y * tileSize, tileSize, tileSize};
+    Vector2D cam = Camera::GetInstance() -> GetPosition();
+    SDL_Rect destRect = {x * tileSize - (int)cam.X, y * tileSize - (int)cam.Y, tileSize, tileSize};
     SDL_RenderCopyEx(Engine::GetInstance() -> getRenderer(), m_TextureMap[tilesetID], &srcRect, &destRect, 0, nullptr, flip);
 }
 

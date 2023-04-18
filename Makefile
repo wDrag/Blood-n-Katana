@@ -3,7 +3,7 @@ OBJS = main.cpp src/Core/engine.cpp src/Graphics/TextureManager.cpp
 OBJS += src/Animation/AnimationHandler.cpp src/Inputs/Input.cpp src/Timer/Timer.cpp
 OBJS += src/Map/TileLayer.cpp src/TinyXML/tinystr.cpp src/TinyXML/tinyxml.cpp 
 OBJS += src/TinyXML/tinyxmlparser.cpp src/TinyXML/tinyxmlerror.cpp
-OBJS += src/Map/MapParser.cpp
+OBJS += src/Map/MapParser.cpp src/Camera/Camera.cpp
 #Characters lib
 CHARACTERS = src/Characters/Samurai.cpp
 #CC specifies which compiler we're using

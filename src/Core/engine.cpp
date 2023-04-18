@@ -5,6 +5,7 @@
 #include "Inputs/Input.h"
 #include "Timer/Timer.h"
 #include "Map/MapParser.h"
+#include "Camera/Camera.h"
 
 Engine* Engine::s_Instance = nullptr;
 Samurai* player = nullptr;
@@ -22,7 +23,7 @@ bool Engine::Init(){
         SDL_Log("Failed to create window: %s", SDL_GetError());
         return false;
     }
-    SDL_SetWindowFullscreen(m_Window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    // SDL_SetWindowFullscreen(m_Window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (m_Renderer == nullptr){
@@ -46,6 +47,8 @@ bool Engine::Init(){
     
    
     player = new Samurai(new Properties("player_Idle", 128, 128, 100, 300));
+
+    Camera::GetInstance() -> setTarget(player -> GetOrigin());
 
     // TextureManager::GetInstance() -> checkMap();
 
@@ -72,11 +75,12 @@ void Engine::Quit(){
 
 void Engine::Update(){
     float dt = Timer::getInstance() -> getDeltaTime();
-    // m_LevelMap -> Update();
+    m_LevelMap -> Update();//currently doing nothing
+    Camera::GetInstance() -> Update(dt);
     player -> Update(dt);
 }
 void Engine::Render(){
-    SDL_SetRenderDrawColor(m_Renderer, 203, 195, 227, 255);
+    SDL_SetRenderDrawColor(m_Renderer, 8, 14, 33, 1);
     SDL_RenderClear(m_Renderer);
 
     m_LevelMap -> Render();    
