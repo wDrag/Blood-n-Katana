@@ -14,8 +14,8 @@ class Timer{
 
     private:
         static Timer* s_Instance;
-        float m_StartTime;
-        float m_DeltaTime;
+        float m_StartTime = 0.0f;
+        float m_DeltaTime = 0.0f;
 };
 
 #endif

@@ -1,8 +1,6 @@
 #include "Map/TileLayer.h"
 #include "Graphics/TextureManager.h"
 
-#include <iostream>
-#include <fstream>
 
 TileLayer::TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, TilesetList tilesets) : m_Tilesets (tilesets){
 
@@ -20,7 +18,6 @@ TileLayer::TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, 
 }
 
 void TileLayer::Render(){
-std::fstream fo("log.txt", std::ios::out | std::ios::app);
     for (int i = 0; i < m_RowCount; i++){
         for (int j = 0; j < m_ColCount; j++){
             int tileID = m_TileMap[i][j];
@@ -44,11 +41,9 @@ std::fstream fo("log.txt", std::ios::out | std::ios::app);
                 tileRow--;
                 tileCol = ts.ColCount - 1;
             }
-            fo << i << " " << j << " " << tileID << " " << tileRow << " " << tileCol << '\n';
-            TextureManager::GetInstance() -> DrawTile(ts.Name, ts.TileSize, j, i, tileRow, tileCol);
+             TextureManager::GetInstance() -> DrawTile(ts.Name, ts.TileSize, j, i, tileRow, tileCol);
         }
     }
-fo << "-0-0------------------------------------------------0-0-\n";
 }
 void TileLayer::Update(){
     //do nothing yet

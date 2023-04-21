@@ -45,8 +45,8 @@ bool Engine::Init(){
     TextureManager::GetInstance() -> Load("player_Jump", "src/resources/Samurai/Jump.png");
     TextureManager::GetInstance() -> Load("player_Protect", "src/resources/Samurai/Protection.png");
     
-   
-    player = new Samurai(new Properties("player_Idle", 128, 128, 100, 300));
+   //200 600
+    player = new Samurai(new Properties("player_Idle", 128, 128, 200, 300));
 
     Camera::GetInstance() -> setTarget(player -> GetOrigin());
 

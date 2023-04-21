@@ -24,6 +24,7 @@ class Engine{
 
         inline bool isRunning() { return m_isRunning; }
         inline SDL_Renderer* getRenderer() { return m_Renderer; }
+        inline GameMap* GetMap() {return m_LevelMap;}
     private:
         bool m_isRunning;
         SDL_Window* m_Window;
