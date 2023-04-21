@@ -27,6 +27,7 @@ class RigidBody{
         inline void UnsetFriction() {m_Friction = Vector2D();}
 
         inline float getMass(){return m_Mass;}
+        inline float getGravity(){return m_Gravity;}
         inline Vector2D Position(){return m_Position;}
         inline Vector2D Velocity(){return m_Velocity;}
         inline Vector2D Acceleration(){return m_Acceleration;}

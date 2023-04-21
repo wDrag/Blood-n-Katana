@@ -12,8 +12,8 @@
 #include <string>
 
 
-#define JUMP_TIME 5.0f
-#define JUMP_FORCE 10.0f
+#define JUMP_TIME 20.0f
+#define JUMP_FORCE 9.0f
 
 class Samurai : public Character{
     public:

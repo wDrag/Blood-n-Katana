@@ -2,4 +2,4 @@
 A simple game of samurais fighting undead
 
 To-do:
-collision
+    Remake the state
