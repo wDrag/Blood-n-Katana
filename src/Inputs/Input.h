@@ -3,6 +3,9 @@
 
 #include <SDL2/SDL.h>
 
+
+enum Axis {HORIZONTAL, VERTICAL};
+
 class Input{
     public:
         static Input* getInstance(){
@@ -15,6 +18,9 @@ class Input{
 
         void LockKey();
         void UnlockKey();
+
+        int GetAxisKey(Axis axis);
+        int GetAttackKey();
 
     private:
         static bool m_KeyLocked;

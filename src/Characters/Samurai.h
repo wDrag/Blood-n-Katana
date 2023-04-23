@@ -15,29 +15,42 @@
 #define JUMP_TIME 20.0f
 #define JUMP_FORCE 9.0f
 
+
 class Samurai : public Character{
     public:
         Samurai(Properties* props);
         virtual void Draw();
         virtual void Update(float dt);
         virtual void Clean();
-        void WalkLeft();
-        void WalkRight();
+        // void WalkLeft();
+        // void WalkRight();
         void RunLeft();
         void RunRight();
         void Idling();
         void Jump(float dt);
-        // void Protect();
-        // void Attack1();
-        // void Attack2();
-        // void Attack3();
+        inline bool isAttacking(){
+            return (m_isAttacking1 || m_isAttacking2 || m_isAttacking3);
+        }
+        void Protect();
+        void Attack1();
+        void Attack2();
+        void Attack3();
         
     private:
-        bool m_IsJumping;
-        bool m_Jumpable;
+        bool m_isJumping;
+        bool m_isGrounded;
+        bool m_isRunning;
+        bool m_isFalling;
+        bool m_isProtecting;
+        bool m_isAttacking1;
+        bool m_isAttacking2;
+        bool m_isAttacking3;
 
         float m_JumpTime;
         float m_JumpForce;
+        // float m_AttackTime1;
+        // float m_AttackTime2;
+        // float m_AttackTime3;
 
         Vector2D m_LastSafePosition;
 

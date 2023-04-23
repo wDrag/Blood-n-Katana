@@ -9,9 +9,9 @@ class AnimationHandler{
         AnimationHandler(){}
 
         void Update(float dt);
-        void Draw(float x, float y, int spriteWidth, int spriteHeight);
+        void Draw(float x, float y, int spriteWidth, int spriteHeight, SDL_RendererFlip flip = SDL_FLIP_NONE);
         void SetDir(SDL_RendererFlip Dir);
-        void SetProps(std::string textureID, int spriteRow, int FrameCount, int animSpeed, SDL_RendererFlip flip = SDL_FLIP_NONE);
+        void SetProps(std::string textureID, int spriteRow, int FrameCount, int animSpeed);
         void AnimationStart();
         bool ACycle();
         bool UnderCycle();
@@ -22,7 +22,6 @@ class AnimationHandler{
         int m_AnimSpeed, m_FrameCount;
         int m_FrameNum;
         std::string m_textureID;
-        SDL_RendererFlip m_Flip;
         Uint32 m_StartTime = 0;
 };
 
