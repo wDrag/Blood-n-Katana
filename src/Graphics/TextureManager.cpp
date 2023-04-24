@@ -22,6 +22,27 @@ bool TextureManager::Load(std::string id, std::string fileName){
 
     return true;
 }
+
+bool TextureManager::ParseTextures(std::string source, std::string value){
+    TiXmlDocument xml;
+    xml.LoadFile(source);
+    if (xml.Error()){
+        std::cout << "Failed to load: " << source << '\n';
+        return false;
+    }
+
+    TiXmlElement *root = xml.RootElement();
+    for(TiXmlElement * e = root -> FirstChildElement(); e!= nullptr; e = e -> NextSiblingElement()){
+        if (e -> Value() != value) continue;
+        for (TiXmlElement * e1 = e -> FirstChildElement(); e1 != nullptr; e1 = e1 -> NextSiblingElement()){
+            std::string id = e1->Attribute("id");
+            std::string src = e1->Attribute("source");
+            Load(id, src);
+        }
+    }
+    return true;
+}
+
 void TextureManager::Draw(std::string id, int x, int y, int width, int height, SDL_RendererFlip flip){
     SDL_Rect srcRect = {0, 0, width, height};
     SDL_Rect destRect = {x, y, width, height};

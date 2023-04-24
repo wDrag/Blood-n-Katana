@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Textures>
+    <Samurai>
+        <texture id="player_Idle" source="src/resources/Samurai/Idle.png"/>
+        <texture id="player_Walk" source="src/resources/Samurai/Walk.png"/>
+        <texture id="player_Run" source="src/resources/Samurai/Run.png"/>
+        <texture id="player_Jump" source="src/resources/Samurai/Jump.png"/>
+        <texture id="player_Protect" source="src/resources/Samurai/Protect.png"/>
+        <texture id="player_Hurt" source="src/resources/Samurai/Hurt.png"/>
+        <texture id="player_Dead" source="src/resources/Samurai/Dead.png"/>
+        <texture id="player_Attack1" source="src/resources/Samurai/Attack_1.png"/>
+        <texture id="player_Attack2" source="src/resources/Samurai/Attack_2.png"/>
+        <texture id="player_Attack3" source="src/resources/Samurai/Attack_3.png"/>
+    </Samurai>
+</Textures>

@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <string>
 #include <map>
+#include "TinyXML/tinyxml.h"
 
 class TextureManager{
     public:
@@ -12,6 +13,7 @@ class TextureManager{
             return s_Instance = (s_Instance != nullptr) ? s_Instance : new TextureManager();
         }
         bool Load(std::string id, std::string fileName); 
+        bool ParseTextures(std::string source, std::string value);
         void Drop(std::string id);
         void Clean();
         void Draw(std::string id, int x, int y, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE);   

@@ -36,17 +36,9 @@ bool Engine::Init(){
         return false;
     }
     m_LevelMap = MapParser::GetInstance() -> GetMap("MAP");
-    TextureManager::GetInstance() -> Load("player_Idle", "src/resources/Samurai/Idle.png");
-    TextureManager::GetInstance() -> Load("player_Walk", "src/resources/Samurai/Walk.png");
-    TextureManager::GetInstance() -> Load("player_Run", "src/resources/Samurai/Run.png");
-    TextureManager::GetInstance() -> Load("player_Attack1", "src/resources/Samurai/Attack_1.png");
-    TextureManager::GetInstance() -> Load("player_Attack2", "src/resources/Samurai/Attack_2.png");
-    TextureManager::GetInstance() -> Load("player_Attack3", "src/resources/Samurai/Attack_3.png");
-    TextureManager::GetInstance() -> Load("player_Jump", "src/resources/Samurai/Jump.png");
-    TextureManager::GetInstance() -> Load("player_Protect", "src/resources/Samurai/Protect.png");
-    TextureManager::GetInstance() -> Load("player_Hurt", "src/resources/Samurai/Hurt.png");
-    TextureManager::GetInstance() -> Load("player_Dead", "src/resources/Samurai/Dead.png");
-    
+
+    TextureManager::GetInstance() -> ParseTextures("src/resources/Textures.xml", "Samurai");
+
     player = new Samurai(new Properties("player_Idle", 128, 128, 200, 450));
 
     Camera::GetInstance() -> setTarget(player -> GetOrigin());
