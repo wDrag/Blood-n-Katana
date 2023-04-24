@@ -52,10 +52,7 @@ void Engine::Clean(){
     MapParser::GetInstance() -> Clean();
     TextureManager::GetInstance() -> Clean();
     player -> Clean();
-    SDL_DestroyRenderer(m_Renderer);
-    SDL_DestroyWindow(m_Window);
-    IMG_Quit();
-    SDL_Quit();
+    Quit();
 }
 
 void Engine::Quit(){

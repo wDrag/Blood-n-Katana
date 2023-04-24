@@ -7,6 +7,8 @@
 
 #define UNI_MASS 1.0f
 #define GRAVITY 4.9f
+#define START_POS_X 200
+#define START_POS_Y 450
 
 class RigidBody{
     public:
@@ -42,12 +44,12 @@ class RigidBody{
         float m_Mass;
         float m_Gravity;
 
-        Vector2D m_Force;
-        Vector2D m_Friction;
+        Vector2D m_Force = Vector2D();
+        Vector2D m_Friction = Vector2D();
 
-        Vector2D m_Position;
-        Vector2D m_Velocity;
-        Vector2D m_Acceleration;
+        Vector2D m_Position = Vector2D(START_POS_X, START_POS_Y);
+        Vector2D m_Velocity = Vector2D();
+        Vector2D m_Acceleration = Vector2D();
 };
 
 #endif

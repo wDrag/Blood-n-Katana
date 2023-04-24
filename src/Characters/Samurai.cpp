@@ -10,15 +10,6 @@
 
 Samurai::Samurai(Properties* props) : Character(props){
 
-    m_isFalling = false;
-    m_isRunning = false;
-    m_isAttacking1 = false;
-    m_isAttacking2 = false;
-    m_isAttacking3 = false;
-    m_isJumping = false;
-    m_isProtecting = false;
-    m_isGrounded = false;
-
     m_JumpTime = JUMP_TIME;
     m_JumpForce = JUMP_FORCE;
 
@@ -79,6 +70,8 @@ void Samurai::RunLeft(){
         m_FaceDir = 0;
     m_RigidBody -> ApplyForceY(0);
     m_RigidBody -> ApplyForceX(7 * left);
+    if (m_isRunning == false)
+        m_Animation -> AnimationStart();
     m_isRunning = true;
     m_Animation -> SetProps("player_Run", 1, 8, 125);
 }
@@ -92,6 +85,8 @@ void Samurai::RunRight(){
         m_FaceDir = 1;
     m_RigidBody -> ApplyForceY(0);
     m_RigidBody -> ApplyForceX(7 * right);
+    if (m_isRunning == false)
+        m_Animation -> AnimationStart();
     m_isRunning = true;
     m_Animation -> SetProps("player_Run", 1, 8, 125);
 }
@@ -120,9 +115,9 @@ void Samurai::Jump(float dt){
 void Samurai::Idling(){
     m_isRunning = false;
     m_isProtecting = false;
-    m_isAttacking1 = false;
-    m_isAttacking2 = false;
-    m_isAttacking3 = false;
+    // m_isAttacking1 = false;
+    // m_isAttacking2 = false;
+    // m_isAttacking3 = false;
     m_RigidBody -> UnsetForce();
     m_Animation -> SetProps("player_Idle", 1, 6, 150);
 }
@@ -131,28 +126,43 @@ void Samurai::Idling(){
 
 void Samurai::Protect(){
     m_RigidBody -> UnsetForce();
+    if (m_isProtecting = false)
+        m_Animation -> AnimationStart();
     m_isProtecting = true;
     m_Animation -> SetProps("player_Protect", 1, 2, 200);
 }
 
 void Samurai::Attack1(){
+    if (m_isAttacking1 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
+    if (m_isAttacking1 == false)
+        m_Animation -> AnimationStart();
     m_isAttacking1 = true;
     m_Animation -> SetProps("player_Attack1", 1, 4, 180);
 }
 void Samurai::Attack2(){
+    if (m_isAttacking2 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
+    if (m_isAttacking2 == false)
+        m_Animation -> AnimationStart();
     m_isAttacking2 = true;
     m_Animation -> SetProps("player_Attack2", 1, 5, 220);
 }
 void Samurai::Attack3(){
+    if (m_isAttacking3 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
+    if (m_isAttacking3 == false)
+        m_Animation -> AnimationStart();
     m_isAttacking3 = true;
     m_Animation -> SetProps("player_Attack3", 1, 4, 120);   
 }
 
 
 void Samurai::Update(float dt){
+
+    if (m_Animation -> ACycle() && isAttacking() == true){
+        stopAttack();
+    }
 
     if (m_isFalling) Input::getInstance() -> LockKey();
     else Input::getInstance() -> UnlockKey();
@@ -177,6 +187,16 @@ void Samurai::Update(float dt){
     }
     
     //attack
+
+    if (m_isAttacking1 == true){
+        Attack1();
+    }
+    if (m_isAttacking2 == true){
+        Attack2();
+    }
+    if (m_isAttacking3 == true){
+        Attack3();
+    }
 
     if (Input::getInstance() -> GetAttackKey() == 1 && m_isGrounded == true){
         Attack1();

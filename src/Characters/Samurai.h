@@ -31,20 +31,23 @@ class Samurai : public Character{
         inline bool isAttacking(){
             return (m_isAttacking1 || m_isAttacking2 || m_isAttacking3);
         }
+        inline void stopAttack(){
+            m_isAttacking1 = m_isAttacking2 = m_isAttacking3 = false;
+        }
         void Protect();
         void Attack1();
         void Attack2();
         void Attack3();
         
     private:
-        bool m_isJumping;
-        bool m_isGrounded;
-        bool m_isRunning;
-        bool m_isFalling;
-        bool m_isProtecting;
-        bool m_isAttacking1;
-        bool m_isAttacking2;
-        bool m_isAttacking3;
+        bool m_isJumping = false;
+        bool m_isGrounded = false;
+        bool m_isRunning = false;
+        bool m_isFalling = false;
+        bool m_isProtecting = false;
+        bool m_isAttacking1 = false;
+        bool m_isAttacking2 = false;
+        bool m_isAttacking3 = false;
 
         float m_JumpTime;
         float m_JumpForce;

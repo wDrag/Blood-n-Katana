@@ -10,7 +10,7 @@
 
 struct Properties{
 
-    Properties(std::string textureID, int width, int height, float x, float y){
+    Properties(std::string textureID, int width, int height, float x = 0.0f, float y = 0.0f){
         X = x;
         Y = y;
         Width = width;
@@ -22,7 +22,7 @@ struct Properties{
     public:
         std::string TextureID;
         int Width, Height;
-        float X, Y;
+        float X = 0.0f, Y = 0.0f;
 };
 
 class GameObject : public IObject{
