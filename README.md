@@ -2,7 +2,7 @@
 A simple game of samurais fighting undead
 
 To-do:
-    Ajust animation
+    Improve animation
     Add enemies
     Add HP and stats
     Add weapons hitbox

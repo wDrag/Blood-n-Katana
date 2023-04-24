@@ -20,9 +20,9 @@ class Camera{
     private:
         Camera(){ m_ViewBox = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}; }
 
-        Point* m_Target;
-        Vector2D m_Position;
-        SDL_Rect m_ViewBox;
+        Point* m_Target = new Point();
+        Vector2D m_Position = Vector2D();
+        SDL_Rect m_ViewBox = SDL_Rect();
         
         static Camera* s_Instance;
 };
