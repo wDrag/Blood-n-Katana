@@ -236,6 +236,7 @@ void Samurai::Update(float dt){
     else 
         m_isGrounded = false;
 
+    SDL_Log("die here? X: %f Y: %f", m_Transform -> X, m_Transform -> Y);
 
     ///////
     

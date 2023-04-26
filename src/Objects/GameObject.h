@@ -22,7 +22,7 @@ struct Properties{
     public:
         std::string TextureID;
         int Width, Height;
-        float X = 0.0f, Y = 0.0f;
+        float X, Y;
 };
 
 class GameObject : public IObject{

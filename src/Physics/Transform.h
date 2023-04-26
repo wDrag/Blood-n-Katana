@@ -5,9 +5,9 @@
 
 class Transform{
     public:
-        float X, Y;
+        float X = 0.0f, Y = 0.0f;
 
-        Transform(float x, float y){
+        Transform(float x = 0.0f, float y = 0.0f){
             X = x;
             Y = y;
         }
