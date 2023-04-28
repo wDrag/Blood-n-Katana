@@ -10,3 +10,5 @@ To-do:
     Add Hitbox for Particle
     Add Music
     Add Menu
+    Add How to play
+    
