@@ -9,11 +9,8 @@
 #include "Physics/Vector2D.h"
 #include "Collision/CollisionHandler.h"
 #include "Inputs/Input.h"
+#include "Globals/Globals.h"
 #include <string>
-
-
-#define JUMP_TIME 20.0f
-#define JUMP_FORCE 9.0f
 
 
 class Samurai : public Character{

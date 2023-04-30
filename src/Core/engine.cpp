@@ -18,7 +18,7 @@ bool Engine::Init(){
     }
 
     SDL_WindowFlags WINFLAGS = (SDL_WindowFlags)(SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
-    m_Window = SDL_CreateWindow("BND", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, WINFLAGS);
+    m_Window = SDL_CreateWindow("BND", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Globals::GetInstance() -> SCREEN_WIDTH, Globals::GetInstance() -> SCREEN_HEIGHT, WINFLAGS);
     if (m_Window == nullptr){
         SDL_Log("Failed to create window: %s", SDL_GetError());
         return false;
@@ -39,7 +39,8 @@ bool Engine::Init(){
 
     TextureManager::GetInstance() -> ParseTextures("src/resources/Textures.xml", "Samurai");
 
-    player = new Samurai(new Properties("player_Idle", 128, 128, 200, 450));
+    Properties* PlayerProps = new Properties("player_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX, Globals::GetInstance() -> StartingY);
+    player = new Samurai(PlayerProps);
 
     Camera::GetInstance() -> setTarget(player -> GetOrigin());
 

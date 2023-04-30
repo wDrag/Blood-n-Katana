@@ -4,7 +4,7 @@
 #include "SDL2/SDL.h"
 #include "Physics/Point.h"
 #include "Physics/Vector2D.h"
-#include "Core/engine.h"
+#include "Globals/Globals.h"
 
 class Camera{
     public:
@@ -18,7 +18,7 @@ class Camera{
         inline void setTarget(Point* target){m_Target = target;}
 
     private:
-        Camera(){ m_ViewBox = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}; }
+        Camera(){ m_ViewBox = {0, 0, Globals::GetInstance() -> SCREEN_WIDTH, Globals::GetInstance() -> SCREEN_HEIGHT}; }
 
         Point* m_Target = new Point();
         Vector2D m_Position = Vector2D();

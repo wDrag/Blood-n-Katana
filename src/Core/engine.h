@@ -6,9 +6,6 @@
 
 #include "Map/GameMap.h"
 
-#define SCREEN_WIDTH  1440
-#define SCREEN_HEIGHT 960
-
 class Engine{
     public:
         static Engine* GetInstance(){

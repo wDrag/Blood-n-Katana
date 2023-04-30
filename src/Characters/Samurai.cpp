@@ -10,8 +10,8 @@
 
 Samurai::Samurai(Properties* props) : Character(props){
 
-    m_JumpTime = JUMP_TIME;
-    m_JumpForce = JUMP_FORCE;
+    m_JumpTime = Globals::GetInstance() -> JUMP_TIME;
+    m_JumpForce = Globals::GetInstance() -> JUMP_FORCE;
 
     m_Collider = new Collider;
     m_Collider -> SetBuffer(0, 0, 0, 0);
@@ -104,7 +104,7 @@ void Samurai::Jump(float dt){
     }
     else{
         m_isJumping = false;
-        m_JumpTime = JUMP_TIME;
+        m_JumpTime = Globals::GetInstance() -> JUMP_TIME;
         m_RigidBody -> UnsetForce();
     }
     if (m_isJumping || !m_isGrounded){
@@ -159,6 +159,15 @@ void Samurai::Attack3(){
 
 
 void Samurai::Update(float dt){
+
+
+    // SDL_Log("die here? X: %f Y: %f", m_Transform -> X, m_Transform -> Y);
+    // SDL_Log("Force X: %f Y: %f", m_RigidBody ->Force().X, m_RigidBody->Force().Y);
+    // SDL_Log("Acceleration X: %f Y: %f", m_RigidBody ->Acceleration().X, m_RigidBody->Acceleration().Y);
+    // SDL_Log("Velocity X: %f Y: %f", m_RigidBody ->Velocity().X, m_RigidBody->Velocity().Y);
+    // SDL_Log("Rigid Body X: %f Y: %f", m_RigidBody ->Position().X, m_RigidBody->Position().Y);
+    
+    m_RigidBody -> UnsetForce();
 
     if (m_Animation -> ACycle() && isAttacking() == true){
         stopAttack();
@@ -236,7 +245,6 @@ void Samurai::Update(float dt){
     else 
         m_isGrounded = false;
 
-    SDL_Log("die here? X: %f Y: %f", m_Transform -> X, m_Transform -> Y);
 
     ///////
     

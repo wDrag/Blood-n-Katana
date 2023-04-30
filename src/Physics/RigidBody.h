@@ -2,13 +2,12 @@
 #define RIGIDBODY_H
 
 #include "Physics/Vector2D.h"
-
+#include "Globals/Globals.h"
+#include "SDL2/SDL.h"
 //global modifiers 0.5
 
 #define UNI_MASS 1.0f
 #define GRAVITY 4.9f
-#define START_POS_X 200
-#define START_POS_Y 450
 
 class RigidBody{
     public:
@@ -30,11 +29,14 @@ class RigidBody{
 
         inline float getMass(){return m_Mass;}
         inline float getGravity(){return m_Gravity;}
+        inline Vector2D Force(){return m_Force;}
         inline Vector2D Position(){return m_Position;}
         inline Vector2D Velocity(){return m_Velocity;}
         inline Vector2D Acceleration(){return m_Acceleration;}
         
         void Update(float dt){
+            while (dt > 1.5f)
+                dt -= 1.5f;
             m_Acceleration.X = (m_Force.X + m_Friction.X) / m_Mass;
             m_Acceleration.Y = m_Gravity + m_Force.Y / m_Mass;
             m_Velocity = m_Acceleration * dt;
@@ -46,8 +48,7 @@ class RigidBody{
 
         Vector2D m_Force = Vector2D();
         Vector2D m_Friction = Vector2D();
-
-        Vector2D m_Position = Vector2D(START_POS_X, START_POS_Y);
+        Vector2D m_Position = Vector2D();
         Vector2D m_Velocity = Vector2D();
         Vector2D m_Acceleration = Vector2D();
 };
