@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Stats>
+    <Samurai>
+        <Stats HP=100 ATK=10/>
+        <Attack_1 mode="melee" mod = 1.0/>
+        <Attack_2 mode="melee" mod = 1.5/>
+        <Attack_3 mode="melee" mod = 0.75/>
+    </Samurai>
+    <Countess>
+        <Stats HP=1000 ATK = 20/>
+        <Attack_1 mode="ranged" mod = 1.0/>
+        <Attack_2 mode="ranged" mod = 0.75/>
+        <Attack_3 mode="ranged" mod = 1.5/>
+    </Countess>
+    <Skeleton>
+        <Stats HP=50 ATK = 5/>
+        <Attack_1 mode="melee" mod = 0.5/>
+        <Attack_2 mode="melee" mod = 1.0/>
+        <Attack_3 mode="melee" mod = 2.0/>
+    </Skeleton>
+</Stats>

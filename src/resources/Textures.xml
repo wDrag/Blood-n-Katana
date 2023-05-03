@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Textures>
     <Samurai>
-        <texture id="player_Idle" source="src/resources/Samurai/Idle.png"/>
-        <texture id="player_Walk" source="src/resources/Samurai/Walk.png"/>
-        <texture id="player_Run" source="src/resources/Samurai/Run.png"/>
-        <texture id="player_Jump" source="src/resources/Samurai/Jump.png"/>
-        <texture id="player_Protect" source="src/resources/Samurai/Protect.png"/>
-        <texture id="player_Hurt" source="src/resources/Samurai/Hurt.png"/>
-        <texture id="player_Dead" source="src/resources/Samurai/Dead.png"/>
-        <texture id="player_Attack1" source="src/resources/Samurai/Attack_1.png"/>
-        <texture id="player_Attack2" source="src/resources/Samurai/Attack_2.png"/>
-        <texture id="player_Attack3" source="src/resources/Samurai/Attack_3.png"/>
+        <texture id="Samurai_Idle" source="src/resources/Samurai/Idle.png"/>
+        <texture id="Samurai_Walk" source="src/resources/Samurai/Walk.png"/>
+        <texture id="Samurai_Run" source="src/resources/Samurai/Run.png"/>
+        <texture id="Samurai_Jump" source="src/resources/Samurai/Jump.png"/>
+        <texture id="Samurai_Protect" source="src/resources/Samurai/Protect.png"/>
+        <texture id="Samurai_Hurt" source="src/resources/Samurai/Hurt.png"/>
+        <texture id="Samurai_Dead" source="src/resources/Samurai/Dead.png"/>
+        <texture id="Samurai_Attack1" source="src/resources/Samurai/Attack_1.png"/>
+        <texture id="Samurai_Attack2" source="src/resources/Samurai/Attack_2.png"/>
+        <texture id="Samurai_Attack3" source="src/resources/Samurai/Attack_3.png"/>
     </Samurai>
+    <Countess>
+        <texture id="Countess_Idle" source="src/resources/CountessVampire/Idle.png"/>
+        <texture id="Countess_Walk" source="src/resources/CountessVampire/Walk.png"/>
+        <texture id="Countess_Run" source="src/resources/CountessVampire/Run.png"/>
+        <texture id="Countess_Jump" source="src/resources/CountessVampire/Jump.png"/>
+        <texture id="Countess_Fall" source="src/resources/CountessVampire/Fall.png"/>
+        <texture id="Countess_Hurt" source="src/resources/CountessVampire/Hurt.png"/>
+        <texture id="Countess_Dead" source="src/resources/CountessVampire/Dead.png"/>
+        <texture id="Countess_Attack1" source="src/resources/CountessVampire/Attack_1.png"/>
+        <texture id="Countess_Attack2" source="src/resources/CountessVampire/Attack_2.png"/>
+        <texture id="Countess_Attack3" source="src/resources/CountessVampire/Attack_3.png"/>
+        <texture id="Countess_Particle1" source="src/resources/CountessVampire/Blood_Charge_1.png"/>
+        <texture id="Countess_Particle2" source="src/resources/CountessVampire/Blood_Charge_2.png"/>
+        <texture id="Countess_Particle3" source="src/resources/CountessVampire/Blood_Charge_3.png"/>
+    </Countess>
+    <Skeleton>
+        <texture id="Skeleton_Idle" source="src/resources/Skeleton/Idle.png"/>
+        <texture id="Skeleton_Run" source="src/resources/Skeleton/Run.png"/>
+        <texture id="Skeleton_Dead" source="src/resources/Skeleton/Dead.png"/>
+        <texture id="Skeleton_Jump" source="src/resources/Skeleton/Jump.png"/>
+        <texture id="Skeleton_Attack1" source="src/resources/Skeleton/Attack_1.png"/>
+        <texture id="Skeleton_Attack2" source="src/resources/Skeleton/Attack_2.png"/>
+        <texture id="Skeleton_Attack3" source="src/resources/Skeleton/Attack_3.png"/>
+    </Skeleton>
 </Textures>

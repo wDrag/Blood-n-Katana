@@ -2,6 +2,7 @@
 #include "Graphics/TextureManager.h"
 #include "Physics/Transform.h"
 #include "Characters/Samurai.h"
+#include "Characters/Boss_Vampire.h"
 #include "Inputs/Input.h"
 #include "Timer/Timer.h"
 #include "Map/MapParser.h"
@@ -38,9 +39,13 @@ bool Engine::Init(){
     m_LevelMap = MapParser::GetInstance() -> GetMap("MAP");
 
     TextureManager::GetInstance() -> ParseTextures("src/resources/Textures.xml", "Samurai");
+    TextureManager::GetInstance() -> ParseTextures("src/resources/Textures.xml", "Countess");
 
     Properties* PlayerProps = new Properties("player_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX, Globals::GetInstance() -> StartingY);
     player = new Samurai(PlayerProps);
+
+    // Properties* BossProps = new Properties("Countess_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX, Globals::GetInstance() -> StartingY);
+    //Boss = new Countess_Vampire(PlayerProps);
 
     Camera::GetInstance() -> setTarget(player -> GetOrigin());
 

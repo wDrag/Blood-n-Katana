@@ -1,8 +1,6 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include <chrono>
-
 const int TARGET_FPS = 60;
 const int TARGET_DELTATIME = 15.0f;
 

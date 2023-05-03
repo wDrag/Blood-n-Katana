@@ -1,4 +1,4 @@
-#include "Characters/Samurai.h"
+#include "Characters/Boss_Vampire.h"
 #include "Camera/Camera.h"
 #include <SDL2/SDL.h>
 
@@ -8,9 +8,10 @@
 #define down  1
 
 
-Samurai::Samurai(Properties* props) : Character(props){
 
-    m_JumpTime = Globals::GetInstance() -> JUMP_TIME;
+Countess_Vampire::Countess_Vampire(Properties* props) : Character(props){
+
+    m_JumpTime = Globals::GetInstance() -> JUMP_TIME * 1.5f;
     m_JumpForce = Globals::GetInstance() -> JUMP_FORCE;
 
     m_Collider = new Collider;
@@ -21,13 +22,11 @@ Samurai::Samurai(Properties* props) : Character(props){
     
     m_FaceDir = 1;
     
-    Input::getInstance() -> UnlockKey();
-    
     m_Animation = new AnimationHandler();
     Idling();
 }
 
-void Samurai::Draw(){
+void Countess_Vampire::Draw(){
     m_Animation -> Draw(m_Transform->X, m_Transform->Y, m_Width, m_Height, m_Dir[m_FaceDir]);
 
     // Vector2D cam = Camera::GetInstance() -> GetPosition();
@@ -37,7 +36,7 @@ void Samurai::Draw(){
     // SDL_RenderDrawRect(Engine::GetInstance() -> getRenderer(), &box);
 }
 
-void Samurai::RunLeft(){
+void Countess_Vampire::RunLeft(){
     if (m_JumpForce < m_RigidBody -> getGravity() && !m_isGrounded) {
         m_RigidBody -> UnsetForce();
         return;
@@ -45,14 +44,14 @@ void Samurai::RunLeft(){
     if (m_isGrounded)
         m_FaceDir = 0;
     m_RigidBody -> ApplyForceY(0);
-    m_RigidBody -> ApplyForceX(7 * left);
+    m_RigidBody -> ApplyForceX(10 * left);
     if (m_isRunning == false)
         m_Animation -> AnimationStart();
     m_isRunning = true;
-    m_Animation -> SetProps("Samurai_Run", 1, 8, 125);
+    m_Animation -> SetProps("Countess_Run", 1, 6, 125);
 }
 
-void Samurai::RunRight(){
+void Countess_Vampire::RunRight(){
     if (m_JumpForce < m_RigidBody -> getGravity() && !m_isGrounded) {
         m_RigidBody -> UnsetForce();
         return;
@@ -60,14 +59,14 @@ void Samurai::RunRight(){
     if (m_isGrounded)
         m_FaceDir = 1;
     m_RigidBody -> ApplyForceY(0);
-    m_RigidBody -> ApplyForceX(7 * right);
+    m_RigidBody -> ApplyForceX(10 * right);
     if (m_isRunning == false)
         m_Animation -> AnimationStart();
     m_isRunning = true;
-    m_Animation -> SetProps("Samurai_Run", 1, 8, 125);
+    m_Animation -> SetProps("Countess_Run", 1, 6, 125);
 }
 
-void Samurai::Jump(float dt){
+void Countess_Vampire::Jump(float dt){
     if (m_isGrounded){
         m_Animation -> AnimationStart();
         m_isJumping = true;
@@ -84,57 +83,48 @@ void Samurai::Jump(float dt){
         m_RigidBody -> UnsetForce();
     }
     if (m_isJumping || !m_isGrounded){
-        m_Animation -> SetProps("Samurai_Jump", 1, 2, 100);
+        m_Animation -> SetProps("Countess_Jump", 1, 2, 100);
     }
 }
 
-void Samurai::Idling(){
+void Countess_Vampire::Idling(){
     m_isRunning = false;
-    m_isProtecting = false;
     // m_isAttacking1 = false;
     // m_isAttacking2 = false;
     // m_isAttacking3 = false;
     m_RigidBody -> UnsetForce();
-    m_Animation -> SetProps("Samurai_Idle", 1, 6, 150);
+    m_Animation -> SetProps("Countess_Idle", 1, 5, 150);
 }
 
 /// actions and attack
 
-void Samurai::Protect(){
-    m_RigidBody -> UnsetForce();
-    if (m_isProtecting = false)
-        m_Animation -> AnimationStart();
-    m_isProtecting = true;
-    m_Animation -> SetProps("Samurai_Protect", 1, 2, 200);
-}
-
-void Samurai::Attack1(){
+void Countess_Vampire::Attack1(){
     if (m_isAttacking1 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
     if (m_isAttacking1 == false)
         m_Animation -> AnimationStart();
     m_isAttacking1 = true;
-    m_Animation -> SetProps("Samurai_Attack1", 1, 4, 180);
+    m_Animation -> SetProps("Countess_Attack1", 1, 8, 150);
 }
-void Samurai::Attack2(){
+void Countess_Vampire::Attack2(){
     if (m_isAttacking2 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
     if (m_isAttacking2 == false)
         m_Animation -> AnimationStart();
     m_isAttacking2 = true;
-    m_Animation -> SetProps("Samurai_Attack2", 1, 5, 220);
+    m_Animation -> SetProps("Countess_Attack2", 1, 7, 150);
 }
-void Samurai::Attack3(){
+void Countess_Vampire::Attack3(){
     if (m_isAttacking3 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
     if (m_isAttacking3 == false)
         m_Animation -> AnimationStart();
     m_isAttacking3 = true;
-    m_Animation -> SetProps("Samurai_Attack3", 1, 4, 120);   
+    m_Animation -> SetProps("Countess_Attack3", 1, 10, 150);   
 }
 
 
-void Samurai::Update(float dt){
+void Countess_Vampire::Update(float dt){
 
 
     // SDL_Log("die here? X: %f Y: %f", m_Transform -> X, m_Transform -> Y);
@@ -149,27 +139,13 @@ void Samurai::Update(float dt){
         stopAttack();
     }
 
-    if (m_isFalling) Input::getInstance() -> LockKey();
+    //move
+     if (m_isFalling) Input::getInstance() -> LockKey();
     else Input::getInstance() -> UnlockKey();
 
-    if (Input::getInstance() -> NoKeyDown()){
-        Idling();
-    }
-
+    Idling();
+    
     //move
-
-    if (Input::getInstance() -> GetAxisKey(HORIZONTAL) == right && !isAttacking()){
-        RunRight();
-    }
-    if (Input::getInstance() -> GetAxisKey(HORIZONTAL) == left && !isAttacking()){
-        RunLeft();
-    }
-    if (Input::getInstance() -> GetAxisKey(VERTICAL) == up && !isAttacking()){
-        Jump(dt);
-    }
-    if (Input::getInstance() -> GetAxisKey(VERTICAL) == down && !isAttacking()){
-        Protect();
-    }
     
     //attack
 
@@ -183,18 +159,10 @@ void Samurai::Update(float dt){
         Attack3();
     }
 
-    if (Input::getInstance() -> GetAttackKey() == 1 && m_isGrounded == true){
-        Attack1();
-    }
-    if (Input::getInstance() -> GetAttackKey() == 2 && m_isGrounded == true){
-        Attack2();
-    }
-    if (Input::getInstance() -> GetAttackKey() == 3 && m_isGrounded == true){
-        Attack3();
-    }
-
-    if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded)
+    if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded){
         m_isFalling = true;
+        m_Animation -> SetProps("Countess_Fall", 1, 2, 100);
+    }
     else m_isFalling = false;
 
     //collision handling
@@ -230,6 +198,6 @@ void Samurai::Update(float dt){
     m_Animation -> Update(dt);
 }
 
-void Samurai::Clean(){
+void Countess_Vampire::Clean(){
     TextureManager::GetInstance() -> Clean();
 }
