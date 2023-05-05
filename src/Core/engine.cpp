@@ -1,16 +1,16 @@
 #include "Core/engine.h"
 #include "Graphics/TextureManager.h"
 #include "Physics/Transform.h"
+#include "Characters/Chars_Management.h"
 #include "Characters/Samurai.h"
 #include "Characters/Boss_Vampire.h"
+#include "Characters/Skeleton.h"
 #include "Inputs/Input.h"
 #include "Timer/Timer.h"
 #include "Map/MapParser.h"
 #include "Camera/Camera.h"
 
 Engine* Engine::s_Instance = nullptr;
-Samurai* player = nullptr;
-
 
 bool Engine::Init(){
     if (SDL_Init(SDL_INIT_VIDEO)!= 0 && IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0){
@@ -40,14 +40,18 @@ bool Engine::Init(){
 
     TextureManager::GetInstance() -> ParseTextures("src/resources/Textures.xml", "Samurai");
     TextureManager::GetInstance() -> ParseTextures("src/resources/Textures.xml", "Countess");
+    TextureManager::GetInstance() -> ParseTextures("src/resources/Textures.xml", "Skeleton");
 
-    Properties* PlayerProps = new Properties("player_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX, Globals::GetInstance() -> StartingY);
-    player = new Samurai(PlayerProps);
+    CM::GetInstance() -> StatsParser("src/Characters/GameStats.xml", "Samurai");
+    CM::GetInstance() -> StatsParser("src/Characters/GameStats.xml", "Countess");
+    CM::GetInstance() -> StatsParser("src/Characters/GameStats.xml", "Skeleton");
 
-    // Properties* BossProps = new Properties("Countess_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX, Globals::GetInstance() -> StartingY);
-    //Boss = new Countess_Vampire(PlayerProps);
-
-    Camera::GetInstance() -> setTarget(player -> GetOrigin());
+    Players::GetInstance() -> Spawn("Player_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX, Globals::GetInstance() -> StartingY);
+    Countesses::GetInstance() -> Spawn("Countess_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingXB, Globals::GetInstance() -> StartingYB);
+    Skeletons::GetInstance() -> Spawn("Skeleton_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX + 50, Globals::GetInstance() -> StartingY - 200);
+    
+    
+    Camera::GetInstance() -> setTarget(Players::GetInstance() ->GetPlayer(0) -> GetOrigin());
 
     // TextureManager::GetInstance() -> checkMap();
 
@@ -57,7 +61,10 @@ bool Engine::Init(){
 void Engine::Clean(){
     MapParser::GetInstance() -> Clean();
     TextureManager::GetInstance() -> Clean();
-    player -> Clean();
+    Players::GetInstance() -> Clean();
+    Countesses::GetInstance() -> Clean();
+    Skeletons::GetInstance() -> Clean();
+    CM::GetInstance() -> StatsClean();
     Quit();
 }
 
@@ -73,15 +80,18 @@ void Engine::Quit(){
 void Engine::Update(){
     float dt = Timer::getInstance() -> getDeltaTime();
     m_LevelMap -> Update();//currently doing nothing
+    Players::GetInstance() -> Update(dt);
+    Countesses::GetInstance() -> Update(dt);
+    Skeletons::GetInstance() -> Update(dt);
     Camera::GetInstance() -> Update(dt);
-    player -> Update(dt);
 }
 void Engine::Render(){
     SDL_SetRenderDrawColor(m_Renderer, 8, 14, 33, 1);
     SDL_RenderClear(m_Renderer);
-
     m_LevelMap -> Render();    
-    player -> Draw();
+    Players::GetInstance() -> Draw();
+    Countesses::GetInstance() -> Draw();
+    Skeletons::GetInstance() -> Draw();
     SDL_RenderPresent(m_Renderer);
 }
 void Engine::Events(){

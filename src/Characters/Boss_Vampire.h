@@ -11,7 +11,8 @@
 #include "Globals/Globals.h"
 #include "Inputs/Input.h"
 #include <string>
-
+#include <vector>
+#include "Characters/Chars_Management.h"
 
 class Countess_Vampire : public Character{
     public:
@@ -31,11 +32,12 @@ class Countess_Vampire : public Character{
         inline void stopAttack(){
             m_isAttacking1 = m_isAttacking2 = m_isAttacking3 = false;
         }
-        void WalkLeft();
-        void WalkRight();
         void Attack1();
         void Attack2();
         void Attack3();
+        void Die();
+
+        friend class Countesses;
         
     private:
         bool m_isJumping = false;
@@ -45,6 +47,16 @@ class Countess_Vampire : public Character{
         bool m_isAttacking1 = false;
         bool m_isAttacking2 = false;
         bool m_isAttacking3 = false;
+
+        bool m_isDying = false;
+        bool m_isAlive = true;
+
+        int m_HP = CM::GetInstance()->GetStats("Countess").HP;
+        int m_ATK = CM::GetInstance()->GetStats("Countess").ATK;
+        int m_AttackMod1 = CM::GetInstance()->GetStats("Countess").mod1;
+        int m_AttackMod2 = CM::GetInstance()->GetStats("Countess").mod2;
+        int m_AttackMod3 = CM::GetInstance()->GetStats("Countess").mod3;
+
 
         float m_JumpTime;
         float m_JumpForce;
@@ -63,6 +75,41 @@ class Countess_Vampire : public Character{
         
         std::string m_State;
 
+};
+
+class Countesses{
+    public:
+        static Countesses* GetInstance(){
+            return s_Instance = (s_Instance != nullptr)? s_Instance : new Countesses();
+        }
+        void Spawn(std::string startingState, int x, int y, int w, int h){
+            Countess_Vampire* player = new Countess_Vampire(new Properties(startingState, x, y, w, h));
+            m_Countesses.push_back(player);
+        }
+        void Clean(){
+            for (int i = 0; i < m_Countesses.size(); i++){
+                m_Countesses[i] -> Clean();
+            }
+        }
+        void Update(float dt){
+            for (int i = 0; i < m_Countesses.size(); i++){
+                m_Countesses[i] -> Update(dt);
+                if (!m_Countesses[i] -> m_isAlive){
+                    m_Countesses.erase(m_Countesses.begin() + i);
+                }
+            }
+        }
+        void Draw(){
+            for (int i = 0; i < m_Countesses.size(); i++){
+                m_Countesses[i] -> Draw();
+            }
+        }
+        Countess_Vampire* GetCountess(int index){
+            return m_Countesses[index];
+        }
+    private: 
+        static Countesses* s_Instance;
+        std::vector<Countess_Vampire*> m_Countesses;
 };
 
 #endif

@@ -7,6 +7,7 @@
 #define up   -1
 #define down  1
 
+Skeletons* Skeletons::s_Instance = nullptr;
 
 
 Skeleton::Skeleton(Properties* props) : Character(props){
@@ -22,6 +23,8 @@ Skeleton::Skeleton(Properties* props) : Character(props){
     
     m_FaceDir = 1;
     
+    m_isAlive = true;
+
     m_Animation = new AnimationHandler();
     Idling();
 }
@@ -123,6 +126,13 @@ void Skeleton::Attack3(){
     m_Animation -> SetProps("Skeleton_Attack3", 1, 4, 140);   
 }
 
+void Skeleton::Die(){
+    m_RigidBody -> UnsetForce();
+    if (m_isDying == false)
+        m_Animation -> AnimationStart();
+    m_isDying = true;
+    m_Animation -> SetProps("Skeleton_Dead", 1, 8, 200);
+}
 
 void Skeleton::Update(float dt){
 
@@ -135,13 +145,25 @@ void Skeleton::Update(float dt){
     
     m_RigidBody -> UnsetForce();
 
+    if (m_HP <= 0){
+        Die();
+    }
+    if (m_isDying == true){
+        Die();
+    }
+    if (m_Animation -> ACycle() && m_isDying == true){
+        m_isDying = false;
+        m_isAlive = false;
+        return;
+    }
+
+    if (!m_isDying){
+
     if (m_Animation -> ACycle() && isAttacking() == true){
         stopAttack();
     }
 
     //move
-     if (m_isFalling) Input::getInstance() -> LockKey();
-    else Input::getInstance() -> UnlockKey();
 
     Idling();
     
@@ -164,6 +186,7 @@ void Skeleton::Update(float dt){
     }
     else m_isFalling = false;
 
+    }
     //collision handling
     //X axis
     m_RigidBody -> Update(dt);

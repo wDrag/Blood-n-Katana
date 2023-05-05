@@ -4,7 +4,7 @@ OBJS += src/Animation/AnimationHandler.cpp src/Inputs/Input.cpp src/Timer/Timer.
 OBJS += src/Map/TileLayer.cpp src/TinyXML/tinystr.cpp src/TinyXML/tinyxml.cpp 
 OBJS += src/TinyXML/tinyxmlparser.cpp src/TinyXML/tinyxmlerror.cpp
 OBJS += src/Map/MapParser.cpp src/Camera/Camera.cpp src/Collision/CollisionHandler.cpp
-OBJS += src/Globals/Globals.cpp
+OBJS += src/Globals/Globals.cpp src/Characters/Chars_Management.cpp
 #Characters lib
 CHARACTERS = src/Characters/Samurai.cpp src/Characters/Boss_Vampire.cpp src/Characters/Skeleton.cpp
 #CC specifies which compiler we're using

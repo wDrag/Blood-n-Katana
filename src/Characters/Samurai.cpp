@@ -7,6 +7,7 @@
 #define up   -1
 #define down  1
 
+Players* Players::s_Instance = nullptr;
 
 Samurai::Samurai(Properties* props) : Character(props){
 
@@ -20,10 +21,13 @@ Samurai::Samurai(Properties* props) : Character(props){
     m_RigidBody -> setGravity(5.0f);
     
     m_FaceDir = 1;
+
+    m_isAlive = true;
     
     Input::getInstance() -> UnlockKey();
     
     m_Animation = new AnimationHandler();
+
     Idling();
 }
 
@@ -91,6 +95,7 @@ void Samurai::Jump(float dt){
 void Samurai::Idling(){
     m_isRunning = false;
     m_isProtecting = false;
+    m_isDying = false;
     // m_isAttacking1 = false;
     // m_isAttacking2 = false;
     // m_isAttacking3 = false;
@@ -133,6 +138,13 @@ void Samurai::Attack3(){
     m_Animation -> SetProps("Samurai_Attack3", 1, 4, 120);   
 }
 
+void Samurai::Die(){
+    m_RigidBody -> UnsetForce();
+    if (m_isDying == false)
+        m_Animation -> AnimationStart();
+    m_isDying = true;
+    m_Animation -> SetProps("Samurai_Dead", 1, 8, 200);
+}
 
 void Samurai::Update(float dt){
 
@@ -144,59 +156,80 @@ void Samurai::Update(float dt){
     // SDL_Log("Rigid Body X: %f Y: %f", m_RigidBody ->Position().X, m_RigidBody->Position().Y);
     
     m_RigidBody -> UnsetForce();
-
-    if (m_Animation -> ACycle() && isAttacking() == true){
-        stopAttack();
-    }
-
-    if (m_isFalling) Input::getInstance() -> LockKey();
-    else Input::getInstance() -> UnlockKey();
-
-    if (Input::getInstance() -> NoKeyDown()){
-        Idling();
-    }
-
-    //move
-
-    if (Input::getInstance() -> GetAxisKey(HORIZONTAL) == right && !isAttacking()){
-        RunRight();
-    }
-    if (Input::getInstance() -> GetAxisKey(HORIZONTAL) == left && !isAttacking()){
-        RunLeft();
-    }
-    if (Input::getInstance() -> GetAxisKey(VERTICAL) == up && !isAttacking()){
-        Jump(dt);
-    }
-    if (Input::getInstance() -> GetAxisKey(VERTICAL) == down && !isAttacking()){
-        Protect();
-    }
     
-    //attack
-
-    if (m_isAttacking1 == true){
-        Attack1();
-    }
-    if (m_isAttacking2 == true){
-        Attack2();
-    }
-    if (m_isAttacking3 == true){
-        Attack3();
+    if (Input::getInstance() -> GetKeyDown(SDL_SCANCODE_X)){
+        m_HP = 0;
     }
 
-    if (Input::getInstance() -> GetAttackKey() == 1 && m_isGrounded == true){
-        Attack1();
+    if (m_HP <= 0){
+        Die();
     }
-    if (Input::getInstance() -> GetAttackKey() == 2 && m_isGrounded == true){
-        Attack2();
+    if (m_isDying == true){
+        Die();
     }
-    if (Input::getInstance() -> GetAttackKey() == 3 && m_isGrounded == true){
-        Attack3();
+    if (m_Animation -> ACycle() && m_isDying == true){
+        m_isDying = false;
+        m_isAlive = false;
+        return;
     }
 
-    if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded)
-        m_isFalling = true;
-    else m_isFalling = false;
+    if (!m_isDying){
 
+        if (m_Animation -> ACycle() && isAttacking() == true){
+            stopAttack();
+        }
+
+        if (Input::getInstance() -> NoKeyDown()){
+            Idling();
+        }
+
+        if (m_isFalling) Input::getInstance() -> LockKey();
+        else Input::getInstance() -> UnlockKey();
+
+
+
+
+        //move
+
+        if (Input::getInstance() -> GetAxisKey(HORIZONTAL) == right && !isAttacking()){
+            RunRight();
+        }
+        if (Input::getInstance() -> GetAxisKey(HORIZONTAL) == left && !isAttacking()){
+            RunLeft();
+        }
+        if (Input::getInstance() -> GetAxisKey(VERTICAL) == up && !isAttacking()){
+            Jump(dt);
+        }
+        if (Input::getInstance() -> GetAxisKey(VERTICAL) == down && !isAttacking()){
+            Protect();
+        }
+        
+        //attack
+
+        if (m_isAttacking1 == true){
+            Attack1();
+        }
+        if (m_isAttacking2 == true){
+            Attack2();
+        }
+        if (m_isAttacking3 == true){
+            Attack3();
+        }
+
+        if (Input::getInstance() -> GetAttackKey() == 1 && m_isGrounded == true){
+            Attack1();
+        }
+        if (Input::getInstance() -> GetAttackKey() == 2 && m_isGrounded == true){
+            Attack2();
+        }
+        if (Input::getInstance() -> GetAttackKey() == 3 && m_isGrounded == true){
+            Attack3();
+        }
+
+        if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded)
+            m_isFalling = true;
+        else m_isFalling = false;
+    }
     //collision handling
     //X axis
     m_RigidBody -> Update(dt);
