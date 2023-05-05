@@ -2,9 +2,7 @@
 A simple game of samurais fighting undead
 
 To-do:
-    Object manager?
-    Add enemies
-    Add HP and stats
+    Add HP
     Add death
     Add weapons hitbox
     Add Particle
