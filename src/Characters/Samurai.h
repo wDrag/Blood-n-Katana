@@ -13,6 +13,8 @@
 #include <string>
 #include <vector>
 #include "Characters/Chars_Management.h"
+#include "Characters/Boss_Vampire.h"
+#include "Characters/Skeleton.h"
 
 
 class Samurai : public Character{
@@ -28,6 +30,7 @@ class Samurai : public Character{
         void Idling();
         void Jump(float dt);
         void Die();
+        void Hurt();
         inline bool isAttacking(){
             return (m_isAttacking1 || m_isAttacking2 || m_isAttacking3);
         }
@@ -84,6 +87,22 @@ class Players{
         static Players* GetInstance(){
             return s_Instance = (s_Instance != nullptr)? s_Instance : new Players();
         }
+
+        void checkHit(SDL_Rect HitBox, int damage){
+            for (int i = 0; i < m_Players.size(); i++){
+                if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Players[i] -> m_Collider->GetBox()))
+                    m_Players[i] -> m_HP -= damage;
+            }
+        }
+
+        bool checkCollision(SDL_Rect CharBox){
+            for (int i = 0; i < m_Players.size(); i++){
+                if (CollisionHandler::GetInstance() -> CheckCollision(CharBox, m_Players[i] -> m_Collider->GetBox()))
+                    return true;
+            }
+            return false;
+        }
+        
         void Spawn(std::string startingState, int w, int h, int x, int y){
             Samurai* player = new Samurai(new Properties(startingState, w, h, x, y));
             m_Players.push_back(player);

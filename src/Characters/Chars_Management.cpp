@@ -18,13 +18,13 @@ void CM::StatsParser(std::string source, std::string value){
                 c.ATK = std::stoi(e1 -> Attribute("ATK"));
             }
             if (e1 -> Value() == "Attack_1"){
-                c.mod1 = std::stoi(e1 -> Attribute("mod"));
+                c.mod1 = std::stof(e1 -> Attribute("mod"));
             }
             if (e1 -> Value() == "Attack_2"){
-                c.mod2 = std::stoi(e1 -> Attribute("mod"));
+                c.mod2 = std::stof(e1 -> Attribute("mod"));
             }
             if (e1 -> Value() == "Attack_2"){
-                c.mod2 = std::stoi(e1 -> Attribute("mod"));
+                c.mod2 = std::stof(e1 -> Attribute("mod"));
             }
         }
         m_CharMap[value] = c;

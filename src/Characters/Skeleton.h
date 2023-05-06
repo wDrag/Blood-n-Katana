@@ -12,7 +12,8 @@
 #include "Inputs/Input.h"
 #include <string>
 #include "Characters/Chars_Management.h"
-
+#include "Characters/Boss_Vampire.h"
+#include "Characters/Samurai.h"
 
 class Skeleton : public Character{
     public:
@@ -26,14 +27,14 @@ class Skeleton : public Character{
         void RunRight();
         void Idling();
         void Jump(float dt);
+        void Hurt();
+
         inline bool isAttacking(){
             return (m_isAttacking1 || m_isAttacking2 || m_isAttacking3);
         }
         inline void stopAttack(){
             m_isAttacking1 = m_isAttacking2 = m_isAttacking3 = false;
         }
-        void WalkLeft();
-        void WalkRight();
         void Attack1();
         void Attack2();
         void Attack3();
@@ -57,8 +58,8 @@ class Skeleton : public Character{
         int m_HP = CM::GetInstance()->GetStats("Skeleton").HP;
         int m_ATK = CM::GetInstance()->GetStats("Skeleton").ATK;
         int m_AttackMod1 = CM::GetInstance()->GetStats("Skeleton").mod1;
-        int m_AttackMod2 = CM::GetInstance()->GetStats("Skeleton]").mod2;
-        int m_AttackMod3 = CM::GetInstance()->GetStats("Skeleton]").mod3;
+        int m_AttackMod2 = CM::GetInstance()->GetStats("Skeleton").mod2;
+        int m_AttackMod3 = CM::GetInstance()->GetStats("Skeleton").mod3;
 
 
         float m_JumpTime;
@@ -85,6 +86,24 @@ class Skeletons{
         static Skeletons* GetInstance(){
             return s_Instance = (s_Instance != nullptr)? s_Instance : new Skeletons();
         }
+
+        void checkHit(SDL_Rect HitBox, int damage){
+            for (int i = 0; i < m_Skeletons.size(); i++){
+                if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Skeletons[i] -> m_Collider->GetBox()))
+                    m_Skeletons[i] -> m_HP -= damage;
+                SDL_Log("Skeletons num(%d) HP: %d", i, m_Skeletons[i] -> m_HP);
+                SDL_Log("%d", CM::GetInstance()->GetStats("Skeleton").HP);
+            }
+        }
+
+        bool checkCollision(SDL_Rect CharBox){
+            for (int i = 0; i < m_Skeletons.size(); i++){
+                if (CollisionHandler::GetInstance() -> CheckCollision(CharBox, m_Skeletons[i] -> m_Collider->GetBox()))
+                    return true;
+            }
+            return false;
+        }
+
         void Spawn(std::string startingState, int x, int y, int w, int h){
             Skeleton* player = new Skeleton(new Properties(startingState, x, y, w, h));
             m_Skeletons.push_back(player);

@@ -25,6 +25,8 @@ Skeleton::Skeleton(Properties* props) : Character(props){
     
     m_isAlive = true;
 
+    int m_HP = CM::GetInstance()->GetStats("Skeleton").HP;
+
     m_Animation = new AnimationHandler();
     Idling();
 }
@@ -159,32 +161,32 @@ void Skeleton::Update(float dt){
 
     if (!m_isDying){
 
-    if (m_Animation -> ACycle() && isAttacking() == true){
-        stopAttack();
-    }
+        if (m_Animation -> ACycle() && isAttacking() == true){
+            stopAttack();
+        }
 
-    //move
+        //move
 
-    Idling();
-    
-    //move
-    
-    //attack
+        Idling();
+        
+        //move
+        
+        //attack
 
-    if (m_isAttacking1 == true){
-        Attack1();
-    }
-    if (m_isAttacking2 == true){
-        Attack2();
-    }
-    if (m_isAttacking3 == true){
-        Attack3();
-    }
+        if (m_isAttacking1 == true){
+            Attack1();
+        }
+        if (m_isAttacking2 == true){
+            Attack2();
+        }
+        if (m_isAttacking3 == true){
+            Attack3();
+        }
 
-    if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded){
-        m_isFalling = true;
-    }
-    else m_isFalling = false;
+        if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded){
+            m_isFalling = true;
+        }
+        else m_isFalling = false;
 
     }
     //collision handling
@@ -192,9 +194,15 @@ void Skeleton::Update(float dt){
     m_RigidBody -> Update(dt);
     m_LastSafePosition.X = m_Transform -> X;
     m_Transform -> X += m_RigidBody -> Position().X;
-    m_Collider -> SetBox(m_Transform -> X + 43, m_Transform -> Y + 46, 43, 82);
+    m_Collider -> SetBox(m_Transform -> X + 43, m_Transform -> Y + 60, 40, 65);
 
     if (CollisionHandler::GetInstance() -> MapCollision(m_Collider -> GetBox())){
+        m_Transform -> X = m_LastSafePosition.X;
+    }
+    if (Players::GetInstance() -> checkCollision(m_Collider -> GetBox())){
+        m_Transform -> X = m_LastSafePosition.X;
+    }
+    if (Countesses::GetInstance() -> checkCollision(m_Collider -> GetBox())){
         m_Transform -> X = m_LastSafePosition.X;
     }
 
@@ -202,7 +210,7 @@ void Skeleton::Update(float dt){
     m_RigidBody -> Update(dt);
     m_LastSafePosition.Y = m_Transform -> Y;
     m_Transform -> Y += m_RigidBody -> Position().Y;
-    m_Collider -> SetBox(m_Transform -> X + 43, m_Transform -> Y + 46, 43, 82);
+    m_Collider -> SetBox(m_Transform -> X + 43, m_Transform -> Y + 60, 40, 65);
     
     if (CollisionHandler::GetInstance() -> MapCollision(m_Collider -> GetBox())){
         m_isGrounded = true;
@@ -210,7 +218,14 @@ void Skeleton::Update(float dt){
     }
     else 
         m_isGrounded = false;
-
+    if (Players::GetInstance() -> checkCollision(m_Collider -> GetBox())){
+        m_isGrounded = true;
+        m_Transform -> Y = m_LastSafePosition.Y;
+    }
+    if (Countesses::GetInstance() -> checkCollision(m_Collider -> GetBox())){
+        m_isGrounded = true;
+        m_Transform -> Y = m_LastSafePosition.Y;
+    }
 
     ///////
     

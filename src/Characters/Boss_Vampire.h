@@ -13,6 +13,8 @@
 #include <string>
 #include <vector>
 #include "Characters/Chars_Management.h"
+#include "Characters/Samurai.h"
+#include "Characters/Skeleton.h"
 
 class Countess_Vampire : public Character{
     public:
@@ -36,7 +38,8 @@ class Countess_Vampire : public Character{
         void Attack2();
         void Attack3();
         void Die();
-
+        void Hurt();
+        
         friend class Countesses;
         
     private:
@@ -82,6 +85,22 @@ class Countesses{
         static Countesses* GetInstance(){
             return s_Instance = (s_Instance != nullptr)? s_Instance : new Countesses();
         }
+
+        void checkHit(SDL_Rect HitBox, int damage){
+            for (int i = 0; i < m_Countesses.size(); i++){
+                if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Countesses[i] -> m_Collider->GetBox()))
+                    m_Countesses[i] -> m_HP -= damage;
+            }
+        }
+
+        bool checkCollision(SDL_Rect CharBox){
+            for (int i = 0; i < m_Countesses.size(); i++){
+                if (CollisionHandler::GetInstance() -> CheckCollision(CharBox, m_Countesses[i] -> m_Collider->GetBox()))
+                    return true;
+            }
+            return false;
+        }
+
         void Spawn(std::string startingState, int x, int y, int w, int h){
             Countess_Vampire* player = new Countess_Vampire(new Properties(startingState, x, y, w, h));
             m_Countesses.push_back(player);

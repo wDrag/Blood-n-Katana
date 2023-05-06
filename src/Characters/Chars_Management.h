@@ -9,7 +9,7 @@
 struct Stats{
     int HP;
     int ATK;
-    int mod1, mod2, mod3;
+    float mod1, mod2, mod3;
 };
 
 class CM{
