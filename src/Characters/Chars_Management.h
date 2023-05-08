@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "TinyXML/tinyxml.h"
+#include <iostream>
 
 struct Stats{
     int HP;
@@ -20,6 +21,7 @@ class CM{
         void StatsParser(std::string source, std::string value);
         void StatsClean();
         inline Stats GetStats(std::string value) {return m_CharMap[value];}
+        void checkStats();
     private:
         CM(){};
         static CM* s_Instance;

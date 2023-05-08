@@ -33,7 +33,7 @@ bool TextureManager::ParseTextures(std::string source, std::string value){
 
     TiXmlElement *root = xml.RootElement();
     for(TiXmlElement * e = root -> FirstChildElement(); e!= nullptr; e = e -> NextSiblingElement()){
-        if (e -> Value() != value) continue;
+        if (e -> ValueStr() != value) continue;
         for (TiXmlElement * e1 = e -> FirstChildElement(); e1 != nullptr; e1 = e1 -> NextSiblingElement()){
             std::string id = e1->Attribute("id");
             std::string src = e1->Attribute("source");

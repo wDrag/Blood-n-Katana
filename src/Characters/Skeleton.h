@@ -27,7 +27,6 @@ class Skeleton : public Character{
         void RunRight();
         void Idling();
         void Jump(float dt);
-        void Hurt();
 
         inline bool isAttacking(){
             return (m_isAttacking1 || m_isAttacking2 || m_isAttacking3);
@@ -39,6 +38,7 @@ class Skeleton : public Character{
         void Attack2();
         void Attack3();
         void Die();
+        void Hurt();
 
         friend class Skeletons;
         
@@ -50,6 +50,7 @@ class Skeleton : public Character{
         bool m_isAttacking1 = false;
         bool m_isAttacking2 = false;
         bool m_isAttacking3 = false;
+        bool m_isHurting = false;
 
         bool m_isDying = false;
         bool m_isAlive = true;
@@ -89,10 +90,12 @@ class Skeletons{
 
         void checkHit(SDL_Rect HitBox, int damage){
             for (int i = 0; i < m_Skeletons.size(); i++){
-                if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Skeletons[i] -> m_Collider->GetBox()))
+                if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Skeletons[i] -> m_Collider->GetBox())){
                     m_Skeletons[i] -> m_HP -= damage;
-                SDL_Log("Skeletons num(%d) HP: %d", i, m_Skeletons[i] -> m_HP);
-                SDL_Log("%d", CM::GetInstance()->GetStats("Skeleton").HP);
+                    m_Skeletons[i] -> Hurt();
+                    SDL_Log("Ouch! %d", m_Skeletons[i] -> m_HP);
+                }
+                    
             }
         }
 

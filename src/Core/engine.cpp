@@ -46,6 +46,8 @@ bool Engine::Init(){
     CM::GetInstance() -> StatsParser("src/Characters/GameStats.xml", "Countess");
     CM::GetInstance() -> StatsParser("src/Characters/GameStats.xml", "Skeleton");
 
+    CM::GetInstance() -> checkStats();
+
     Players::GetInstance() -> Spawn("Player_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX, Globals::GetInstance() -> StartingY);
     Countesses::GetInstance() -> Spawn("Countess_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingXB, Globals::GetInstance() -> StartingYB);
     Skeletons::GetInstance() -> Spawn("Skeleton_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX + 50, Globals::GetInstance() -> StartingY - 200);
