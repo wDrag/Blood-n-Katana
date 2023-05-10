@@ -132,9 +132,12 @@ void Countess_Vampire::Die(){
     if (m_isDying == false)
         m_Animation -> AnimationStart();
     m_isDying = true;
-    m_Animation -> SetProps("Skeleton_Dead", 1, 8, 200);
+    m_Animation -> SetProps("Countess_Dead", 1, 9, 200);
 }
 
+void Countess_Vampire::Hurt(){
+    
+}
 
 void Countess_Vampire::Update(float dt){
 

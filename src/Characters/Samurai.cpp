@@ -36,11 +36,11 @@ Samurai::Samurai(Properties* props) : Character(props){
 void Samurai::Draw(){
     m_Animation -> Draw(m_Transform->X, m_Transform->Y, m_Width, m_Height, m_Dir[m_FaceDir]);
 
-    // Vector2D cam = Camera::GetInstance() -> GetPosition();
-    // SDL_Rect box = m_Collider -> GetBox();
-    // box.x -= cam.X;
-    // box.y -= cam.Y;
-    // SDL_RenderDrawRect(Engine::GetInstance() -> getRenderer(), &box);
+    Vector2D cam = Camera::GetInstance() -> GetPosition();
+    SDL_Rect box = m_Collider -> GetBox();
+    box.x -= cam.X;
+    box.y -= cam.Y;
+    SDL_RenderDrawRect(Engine::GetInstance() -> getRenderer(), &box);
 }
 
 void Samurai::RunLeft(){
@@ -122,11 +122,6 @@ void Samurai::Attack1(){
         m_Animation -> AnimationStart();
     m_isAttacking1 = true;
     m_Animation -> SetProps("Samurai_Attack1", 1, 4, 180);
-    if (m_Animation -> getFrame() == 3 || m_Animation -> getFrame() == 4){
-        SDL_Rect Hitbox = {(int)m_Transform -> X + 80, (int)m_Transform -> Y + 65, 50, 40};
-        Skeletons::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);    
-        Countesses::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);
-    }
 }
 void Samurai::Attack2(){
     if (m_isAttacking2 == false && isAttacking()) return;
@@ -184,6 +179,8 @@ void Samurai::Update(float dt){
 
         if (m_Animation -> ACycle() && isAttacking() == true){
             stopAttack();
+            Skeletons::GetInstance() -> DealDMG();    
+            Countesses::GetInstance() -> DealDMG();
         }
 
         if (Input::getInstance() -> NoKeyDown()){
@@ -192,9 +189,6 @@ void Samurai::Update(float dt){
 
         if (m_isFalling) Input::getInstance() -> LockKey();
         else Input::getInstance() -> UnlockKey();
-
-
-
 
         //move
 
@@ -233,6 +227,14 @@ void Samurai::Update(float dt){
             Attack3();
         }
 
+        if (m_isAttacking1 == true){
+            if (m_Animation -> getFrame() == 3 || m_Animation -> getFrame() == 4){
+            SDL_Rect Hitbox = {(int)m_Transform -> X + 40 - (!m_FaceDir) * 40, (int)m_Transform -> Y + 65, 65, 50};
+            Skeletons::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);    
+            Countesses::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);
+        }
+        }
+
         if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded)
             m_isFalling = true;
         else m_isFalling = false;
@@ -242,7 +244,7 @@ void Samurai::Update(float dt){
     m_RigidBody -> Update(dt);
     m_LastSafePosition.X = m_Transform -> X;
     m_Transform -> X += m_RigidBody -> Position().X;
-    m_Collider -> SetBox(m_Transform -> X + 40, m_Transform -> Y + 60, 35, 70);
+    m_Collider -> SetBox(m_Transform -> X + 40, m_Transform -> Y + 60, 35, 68);
 
     if (CollisionHandler::GetInstance() -> MapCollision(m_Collider -> GetBox())){
         m_Transform -> X = m_LastSafePosition.X;
@@ -258,7 +260,7 @@ void Samurai::Update(float dt){
     m_RigidBody -> Update(dt);
     m_LastSafePosition.Y = m_Transform -> Y;
     m_Transform -> Y += m_RigidBody -> Position().Y;
-    m_Collider -> SetBox(m_Transform -> X + 40, m_Transform -> Y + 60, 35, 70);
+    m_Collider -> SetBox(m_Transform -> X + 40, m_Transform -> Y + 60, 35, 68);
     
     if (CollisionHandler::GetInstance() -> MapCollision(m_Collider -> GetBox())){
         m_isGrounded = true;

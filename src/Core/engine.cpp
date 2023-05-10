@@ -9,6 +9,7 @@
 #include "Timer/Timer.h"
 #include "Map/MapParser.h"
 #include "Camera/Camera.h"
+#include "Inputs/Input.h"
 
 Engine* Engine::s_Instance = nullptr;
 
@@ -51,8 +52,7 @@ bool Engine::Init(){
     Players::GetInstance() -> Spawn("Player_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX, Globals::GetInstance() -> StartingY);
     Countesses::GetInstance() -> Spawn("Countess_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingXB, Globals::GetInstance() -> StartingYB);
     Skeletons::GetInstance() -> Spawn("Skeleton_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX + 50, Globals::GetInstance() -> StartingY - 200);
-    
-    
+
     Camera::GetInstance() -> setTarget(Players::GetInstance() ->GetPlayer(0) -> GetOrigin());
 
     // TextureManager::GetInstance() -> checkMap();

@@ -62,6 +62,7 @@ class Skeleton : public Character{
         int m_AttackMod2 = CM::GetInstance()->GetStats("Skeleton").mod2;
         int m_AttackMod3 = CM::GetInstance()->GetStats("Skeleton").mod3;
 
+        int m_DamageTaking = 0;
 
         float m_JumpTime;
         float m_JumpForce;
@@ -91,11 +92,18 @@ class Skeletons{
         void checkHit(SDL_Rect HitBox, int damage){
             for (int i = 0; i < m_Skeletons.size(); i++){
                 if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Skeletons[i] -> m_Collider->GetBox())){
-                    m_Skeletons[i] -> m_HP -= damage;
+                    m_Skeletons[i] -> m_DamageTaking = damage;
                     m_Skeletons[i] -> Hurt();
-                    SDL_Log("Ouch! %d", m_Skeletons[i] -> m_HP);
                 }
                     
+            }
+        }
+
+        void DealDMG(){
+            for (int i = 0; i < m_Skeletons.size(); i++){
+                m_Skeletons[i] -> m_HP -= m_Skeletons[i] -> m_DamageTaking;
+                m_Skeletons[i] -> m_DamageTaking = 0;
+                SDL_Log("Skeleton no.%d HP: %d", i, m_Skeletons[i] -> m_HP);
             }
         }
 

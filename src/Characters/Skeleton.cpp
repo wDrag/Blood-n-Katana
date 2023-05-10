@@ -34,11 +34,11 @@ Skeleton::Skeleton(Properties* props) : Character(props){
 void Skeleton::Draw(){
     m_Animation -> Draw(m_Transform->X, m_Transform->Y, m_Width, m_Height, m_Dir[m_FaceDir]);
 
-    // Vector2D cam = Camera::GetInstance() -> GetPosition();
-    // SDL_Rect box = m_Collider -> GetBox();
-    // box.x -= cam.X;
-    // box.y -= cam.Y;
-    // SDL_RenderDrawRect(Engine::GetInstance() -> getRenderer(), &box);
+    Vector2D cam = Camera::GetInstance() -> GetPosition();
+    SDL_Rect box = m_Collider -> GetBox();
+    box.x -= cam.X;
+    box.y -= cam.Y;
+    SDL_RenderDrawRect(Engine::GetInstance() -> getRenderer(), &box);
 }
 
 void Skeleton::RunLeft(){
@@ -141,7 +141,7 @@ void Skeleton::Hurt(){
     if (m_isHurting == false)
         m_Animation -> AnimationStart();
     m_isHurting = true;
-    m_Animation -> SetProps("Skeleton_Hurt", 1, 3, 100);
+    m_Animation -> SetProps("Skeleton_Dead", 1, 2, 100);
 }
 
 void Skeleton::Update(float dt){

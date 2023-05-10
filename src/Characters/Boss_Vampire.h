@@ -60,6 +60,7 @@ class Countess_Vampire : public Character{
         int m_AttackMod2 = CM::GetInstance()->GetStats("Countess").mod2;
         int m_AttackMod3 = CM::GetInstance()->GetStats("Countess").mod3;
 
+        int m_DamageTaking = 0;
 
         float m_JumpTime;
         float m_JumpForce;
@@ -86,10 +87,20 @@ class Countesses{
             return s_Instance = (s_Instance != nullptr)? s_Instance : new Countesses();
         }
 
-        void checkHit(SDL_Rect HitBox, int damage){
+         void checkHit(SDL_Rect HitBox, int damage){
             for (int i = 0; i < m_Countesses.size(); i++){
-                if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Countesses[i] -> m_Collider->GetBox()))
-                    m_Countesses[i] -> m_HP -= damage;
+                if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Countesses[i] -> m_Collider->GetBox())){
+                    m_Countesses[i] -> m_DamageTaking = damage;
+                }
+                    
+            }
+        }
+
+        void DealDMG(){
+            for (int i = 0; i < m_Countesses.size(); i++){
+                m_Countesses[i] -> m_HP -= m_Countesses[i] -> m_DamageTaking;
+                m_Countesses[i] -> m_DamageTaking = 0;
+                SDL_Log("Countess HP: %d", m_Countesses[i] -> m_HP);
             }
         }
 
@@ -102,8 +113,8 @@ class Countesses{
         }
 
         void Spawn(std::string startingState, int x, int y, int w, int h){
-            Countess_Vampire* player = new Countess_Vampire(new Properties(startingState, x, y, w, h));
-            m_Countesses.push_back(player);
+            Countess_Vampire* Count = new Countess_Vampire(new Properties(startingState, x, y, w, h));
+            m_Countesses.push_back(Count);
         }
         void Clean(){
             for (int i = 0; i < m_Countesses.size(); i++){

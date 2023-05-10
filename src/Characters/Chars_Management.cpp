@@ -24,7 +24,7 @@ void CM::StatsParser(std::string source, std::string value){
                 c.mod2 = std::stof(e1 -> Attribute("mod"));
             }
             if (e1 -> ValueStr() == "Attack_3"){
-                c.mod2 = std::stof(e1 -> Attribute("mod"));
+                c.mod3 = std::stof(e1 -> Attribute("mod"));
             }
         }
         m_CharMap[value] = c;

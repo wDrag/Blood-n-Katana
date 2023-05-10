@@ -9,8 +9,8 @@ CollisionHandler::CollisionHandler(){
 }   
 
 bool CollisionHandler::CheckCollision(SDL_Rect a, SDL_Rect b){
-    bool x_overlaps = (a.x < b.x + b.w) && (a.x + a.w > b.x);
-    bool y_overlaps = (a.y < b.y + b.h) && (a.y + a.h > b.y);
+    bool x_overlaps = ((a.x < b.x + b.w) && (a.x + a.w > b.x)) || ((b.x < a.x + a.w) && (b.x + b.w > a.x));
+    bool y_overlaps = ((a.y < b.y + b.h) && (a.y + a.h > b.y)) || ((b.y < a.y + a.h) && (b.y + b.h > a.y));
     return (x_overlaps && y_overlaps);
 }
 
