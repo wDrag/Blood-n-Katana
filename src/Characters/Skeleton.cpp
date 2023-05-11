@@ -141,7 +141,7 @@ void Skeleton::Hurt(){
     if (m_isHurting == false)
         m_Animation -> AnimationStart();
     m_isHurting = true;
-    m_Animation -> SetProps("Skeleton_Dead", 1, 2, 100);
+    m_Animation -> SetProps("Skeleton_Dead", 1, 2, 50);
 }
 
 void Skeleton::Update(float dt){
@@ -179,6 +179,7 @@ void Skeleton::Update(float dt){
 
             if (m_Animation -> ACycle() && isAttacking() == true){
                 stopAttack();
+                Players::GetInstance() -> DealDMG();
             }
 
             //move
@@ -191,19 +192,25 @@ void Skeleton::Update(float dt){
 
             if (m_isAttacking1 == true){
                 Attack1();
+                SDL_Rect Hitbox = {(int)m_Transform -> X + 100 - (!m_FaceDir) * 100, (int)m_Transform -> Y + 50, 35, 60};
+                Players::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);
             }
             if (m_isAttacking2 == true){
                 Attack2();
+                SDL_Rect Hitbox = {(int)m_Transform -> X + 50 - (!m_FaceDir) * 50, (int)m_Transform -> Y + 50, 70, 50};
+                Players::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod3);
             }
             if (m_isAttacking3 == true){
                 Attack3();
+                SDL_Rect Hitbox = {(int)m_Transform -> X + 75 - (!m_FaceDir) * 75, (int)m_Transform -> Y + 60, 45, 65};
+                Players::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod3);
             }
 
-            if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded){
-                m_isFalling = true;
-            }
-            else m_isFalling = false;
         }
+        if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded){
+            m_isFalling = true;
+        }
+        else m_isFalling = false;
 
     }
     //collision handling

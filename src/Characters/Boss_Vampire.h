@@ -56,9 +56,9 @@ class Countess_Vampire : public Character{
 
         int m_HP = CM::GetInstance()->GetStats("Countess").HP;
         int m_ATK = CM::GetInstance()->GetStats("Countess").ATK;
-        int m_AttackMod1 = CM::GetInstance()->GetStats("Countess").mod1;
-        int m_AttackMod2 = CM::GetInstance()->GetStats("Countess").mod2;
-        int m_AttackMod3 = CM::GetInstance()->GetStats("Countess").mod3;
+        float m_AttackMod1 = CM::GetInstance()->GetStats("Countess").mod1;
+        float m_AttackMod2 = CM::GetInstance()->GetStats("Countess").mod2;
+        float m_AttackMod3 = CM::GetInstance()->GetStats("Countess").mod3;
 
         int m_DamageTaking = 0;
 
@@ -99,8 +99,8 @@ class Countesses{
         void DealDMG(){
             for (int i = 0; i < m_Countesses.size(); i++){
                 m_Countesses[i] -> m_HP -= m_Countesses[i] -> m_DamageTaking;
+                if (m_Countesses[i] -> m_DamageTaking > 0);
                 m_Countesses[i] -> m_DamageTaking = 0;
-                SDL_Log("Countess HP: %d", m_Countesses[i] -> m_HP);
             }
         }
 
@@ -122,7 +122,7 @@ class Countesses{
             }
         }
         void Update(float dt){
-            for (int i = 0; i < m_Countesses.size(); i++){
+            for (int i = m_Countesses.size() - 1; i >= 0; i--){
                 m_Countesses[i] -> Update(dt);
                 if (!m_Countesses[i] -> m_isAlive){
                     m_Countesses.erase(m_Countesses.begin() + i);

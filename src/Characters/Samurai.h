@@ -53,15 +53,19 @@ class Samurai : public Character{
         bool m_isAttacking1 = false;
         bool m_isAttacking2 = false;
         bool m_isAttacking3 = false;
+        bool m_isHurting = false;
+
+        int m_DamageTaking = 0;
 
         bool m_isDying = false;
         bool m_isAlive = true;
+
        
         int m_HP = CM::GetInstance()->GetStats("Samurai").HP;
         int m_ATK = CM::GetInstance()->GetStats("Samurai").ATK;
-        int m_AttackMod1 = CM::GetInstance()->GetStats("Samurai").mod1;
-        int m_AttackMod2 = CM::GetInstance()->GetStats("Samurai").mod2;
-        int m_AttackMod3 = CM::GetInstance()->GetStats("Samurai").mod3;
+        float m_AttackMod1 = CM::GetInstance()->GetStats("Samurai").mod1;
+        float m_AttackMod2 = CM::GetInstance()->GetStats("Samurai").mod2;
+        float m_AttackMod3 = CM::GetInstance()->GetStats("Samurai").mod3;
 
         float m_JumpTime;
         float m_JumpForce;
@@ -91,7 +95,16 @@ class Players{
         void checkHit(SDL_Rect HitBox, int damage){
             for (int i = 0; i < m_Players.size(); i++){
                 if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Players[i] -> m_Collider->GetBox()))
-                    m_Players[i] -> m_HP -= damage;
+                    m_Players[i] -> m_DamageTaking = damage;
+                    m_Players[i] -> Hurt();
+            }
+        }
+
+        void DealDMG(){
+            for (int i = 0; i < m_Players.size(); i++){
+                m_Players[i] -> m_HP -= m_Players[i] -> m_DamageTaking;
+                if (m_Players[i] -> m_DamageTaking > 0)
+                    m_Players[i] -> m_DamageTaking = 0;
             }
         }
 
@@ -113,7 +126,7 @@ class Players{
             }
         }
         void Update(float dt){
-            for (int i = 0; i < m_Players.size(); i++){
+            for (int i = m_Players.size() - 1; i >= 0; i--){
                 m_Players[i] -> Update(dt);
                 if (!m_Players[i] -> m_isAlive){
                     m_Players.erase(m_Players.begin() + i);

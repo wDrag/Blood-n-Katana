@@ -58,9 +58,9 @@ class Skeleton : public Character{
 
         int m_HP = CM::GetInstance()->GetStats("Skeleton").HP;
         int m_ATK = CM::GetInstance()->GetStats("Skeleton").ATK;
-        int m_AttackMod1 = CM::GetInstance()->GetStats("Skeleton").mod1;
-        int m_AttackMod2 = CM::GetInstance()->GetStats("Skeleton").mod2;
-        int m_AttackMod3 = CM::GetInstance()->GetStats("Skeleton").mod3;
+        float m_AttackMod1 = CM::GetInstance()->GetStats("Skeleton").mod1;
+        float m_AttackMod2 = CM::GetInstance()->GetStats("Skeleton").mod2;
+        float m_AttackMod3 = CM::GetInstance()->GetStats("Skeleton").mod3;
 
         int m_DamageTaking = 0;
 
@@ -103,7 +103,6 @@ class Skeletons{
             for (int i = 0; i < m_Skeletons.size(); i++){
                 m_Skeletons[i] -> m_HP -= m_Skeletons[i] -> m_DamageTaking;
                 m_Skeletons[i] -> m_DamageTaking = 0;
-                SDL_Log("Skeleton no.%d HP: %d", i, m_Skeletons[i] -> m_HP);
             }
         }
 
@@ -125,7 +124,7 @@ class Skeletons{
             }
         }
         void Update(float dt){
-            for (int i = 0; i < m_Skeletons.size(); i++){
+            for (int i = m_Skeletons.size() - 1; i >= 0; i--){
                 m_Skeletons[i] -> Update(dt);
                 if (!m_Skeletons[i] -> m_isAlive){
                     m_Skeletons.erase(m_Skeletons.begin() + i);

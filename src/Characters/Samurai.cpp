@@ -148,6 +148,14 @@ void Samurai::Die(){
     m_Animation -> SetProps("Samurai_Dead", 1, 8, 200);
 }
 
+void Samurai::Hurt(){
+    m_RigidBody -> UnsetForce();
+    if (m_isHurting == false)
+        m_Animation -> AnimationStart();
+    m_isHurting = true;
+    m_Animation -> SetProps("Samurai_Hurt", 1, 3, 50);
+}
+
 void Samurai::Update(float dt){
 
 
@@ -177,62 +185,79 @@ void Samurai::Update(float dt){
 
     if (!m_isDying){
 
-        if (m_Animation -> ACycle() && isAttacking() == true){
-            stopAttack();
-            Skeletons::GetInstance() -> DealDMG();    
-            Countesses::GetInstance() -> DealDMG();
+        if (m_isHurting == true){
+            Hurt();
         }
 
-        if (Input::getInstance() -> NoKeyDown()){
-            Idling();
+        if (m_Animation -> ACycle() && m_isHurting == true){
+            m_isHurting = false;
         }
 
-        if (m_isFalling) Input::getInstance() -> LockKey();
-        else Input::getInstance() -> UnlockKey();
+        if (!m_isHurting == true){
+            if (m_Animation -> ACycle() && isAttacking() == true){
+                stopAttack();
+                Skeletons::GetInstance() -> DealDMG();    
+                Countesses::GetInstance() -> DealDMG();
+            }
 
-        //move
+            if (Input::getInstance() -> NoKeyDown()){
+                Idling();
+            }
 
-        if (Input::getInstance() -> GetAxisKey(HORIZONTAL) == right && !isAttacking()){
-            RunRight();
-        }
-        if (Input::getInstance() -> GetAxisKey(HORIZONTAL) == left && !isAttacking()){
-            RunLeft();
-        }
-        if (Input::getInstance() -> GetAxisKey(VERTICAL) == up && !isAttacking()){
-            Jump(dt);
-        }
-        if (Input::getInstance() -> GetAxisKey(VERTICAL) == down && !isAttacking()){
-            Protect();
-        }
-        
-        //attack
+            if (m_isFalling) Input::getInstance() -> LockKey();
+            else Input::getInstance() -> UnlockKey();
 
-        if (m_isAttacking1 == true){
-            Attack1();
-        }
-        if (m_isAttacking2 == true){
-            Attack2();
-        }
-        if (m_isAttacking3 == true){
-            Attack3();
-        }
+            //move
 
-        if (Input::getInstance() -> GetAttackKey() == 1 && m_isGrounded == true){
-            Attack1();
-        }
-        if (Input::getInstance() -> GetAttackKey() == 2 && m_isGrounded == true){
-            Attack2();
-        }
-        if (Input::getInstance() -> GetAttackKey() == 3 && m_isGrounded == true){
-            Attack3();
-        }
+            if (Input::getInstance() -> GetAxisKey(HORIZONTAL) == right && !isAttacking()){
+                RunRight();
+            }
+            if (Input::getInstance() -> GetAxisKey(HORIZONTAL) == left && !isAttacking()){
+                RunLeft();
+            }
+            if (Input::getInstance() -> GetAxisKey(VERTICAL) == up && !isAttacking()){
+                Jump(dt);
+            }
+            if (Input::getInstance() -> GetAxisKey(VERTICAL) == down && !isAttacking()){
+                Protect();
+            }
+            
+            //attack
 
-        if (m_isAttacking1 == true){
-            if (m_Animation -> getFrame() == 3 || m_Animation -> getFrame() == 4){
-            SDL_Rect Hitbox = {(int)m_Transform -> X + 40 - (!m_FaceDir) * 40, (int)m_Transform -> Y + 65, 65, 50};
-            Skeletons::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);    
-            Countesses::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);
-        }
+            if (m_isAttacking1 == true){
+                Attack1();
+            }
+            if (m_isAttacking2 == true){
+                Attack2();
+            }
+            if (m_isAttacking3 == true){
+                Attack3();
+            }
+
+            if (Input::getInstance() -> GetAttackKey() == 1 && m_isGrounded == true){
+                Attack1();
+                SDL_Rect Hitbox = {(int)m_Transform -> X + 40 - (!m_FaceDir) * 40, (int)m_Transform -> Y + 65, 65, 50};
+                // if (m_Animation -> getFrame() == 3 || m_Animation -> getFrame() == 4){
+                Skeletons::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);    
+                Countesses::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);
+                // }
+            }
+            if (Input::getInstance() -> GetAttackKey() == 2 && m_isGrounded == true){
+                Attack2();
+                SDL_Rect Hitbox = {(int)m_Transform -> X + 40 - (!m_FaceDir) * 40, (int)m_Transform -> Y + 40, 65, 85};
+                // if (m_Animation -> getFrame() == 4 || m_Animation -> getFrame() == 5){
+                Skeletons::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod2);    
+                Countesses::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod2);
+                // }
+            }
+            if (Input::getInstance() -> GetAttackKey() == 3 && m_isGrounded == true){
+                Attack3();
+                SDL_Rect Hitbox = {(int)m_Transform -> X + 70 - (!m_FaceDir) * 70, (int)m_Transform -> Y + 60, 45, 40};
+                // if (m_Animation -> getFrame() == 3 || m_Animation -> getFrame() == 4){
+                Skeletons::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod3);    
+                Countesses::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod3);
+                // }
+            }
         }
 
         if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded)
