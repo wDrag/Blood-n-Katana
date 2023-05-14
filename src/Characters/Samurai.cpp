@@ -158,6 +158,7 @@ void Samurai::Hurt(){
 
 void Samurai::Update(float dt){
 
+    SDL_Log("Samurai HP: %d", m_HP);
 
     // SDL_Log("die here? X: %f Y: %f", m_Transform -> X, m_Transform -> Y);
     // SDL_Log("Force X: %f Y: %f", m_RigidBody ->Force().X, m_RigidBody->Force().Y);
@@ -312,5 +313,4 @@ void Samurai::Update(float dt){
 }
 
 void Samurai::Clean(){
-    TextureManager::GetInstance() -> Clean();
 }

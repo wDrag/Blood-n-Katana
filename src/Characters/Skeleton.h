@@ -78,8 +78,6 @@ class Skeleton : public Character{
         
         bool m_FaceDir;//0 for left, 1 for Right 
         SDL_RendererFlip m_Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
-        
-        std::string m_State;
 
 };
 
@@ -108,6 +106,8 @@ class Skeletons{
 
         bool checkCollision(SDL_Rect CharBox){
             for (int i = 0; i < m_Skeletons.size(); i++){
+                if (CharBox.x == m_Skeletons[i] -> m_Collider->GetBox().x && CharBox.y == m_Skeletons[i] -> m_Collider->GetBox().y)
+                    continue;
                 if (CollisionHandler::GetInstance() -> CheckCollision(CharBox, m_Skeletons[i] -> m_Collider->GetBox()))
                     return true;
             }

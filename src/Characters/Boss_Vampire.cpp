@@ -8,6 +8,7 @@
 #define down  1
 
 Countesses* Countesses::s_Instance = nullptr;
+BloodChargesManager* BloodChargesManager::s_Instance = nullptr;
 
 Countess_Vampire::Countess_Vampire(Properties* props) : Character(props){
 
@@ -20,7 +21,7 @@ Countess_Vampire::Countess_Vampire(Properties* props) : Character(props){
     m_RigidBody = new RigidBody();
     m_RigidBody -> setGravity(5.0f);
     
-    m_FaceDir = 1;
+    m_FaceDir = 0;
 
     m_isAlive = true;
 
@@ -105,24 +106,30 @@ void Countess_Vampire::Idling(){
 void Countess_Vampire::Attack1(){
     if (m_isAttacking1 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
-    if (m_isAttacking1 == false)
+    if (m_isAttacking1 == false){
         m_Animation -> AnimationStart();
+        BloodChargesManager::GetInstance() -> Spawn("Countess_Particle1", m_Transform -> X, m_Transform -> Y, Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, m_FaceDir, 1, m_ATK * m_AttackMod1, 0);
+    }
     m_isAttacking1 = true;
     m_Animation -> SetProps("Countess_Attack1", 1, 8, 150);
 }
 void Countess_Vampire::Attack2(){
     if (m_isAttacking2 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
-    if (m_isAttacking2 == false)
+    if (m_isAttacking2 == false){
         m_Animation -> AnimationStart();
+        BloodChargesManager::GetInstance() -> Spawn("Countess_Particle1", m_Transform -> X, m_Transform -> Y, Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, m_FaceDir, 1, m_ATK * m_AttackMod1, 0);
+    }
     m_isAttacking2 = true;
     m_Animation -> SetProps("Countess_Attack2", 1, 7, 150);
 }
 void Countess_Vampire::Attack3(){
     if (m_isAttacking3 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
-    if (m_isAttacking3 == false)
+    if (m_isAttacking3 == false){
         m_Animation -> AnimationStart();
+        BloodChargesManager::GetInstance() -> Spawn("Countess_Particle1", m_Transform -> X, m_Transform -> Y, Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, m_FaceDir, 1, m_ATK * m_AttackMod1, 0);
+    }
     m_isAttacking3 = true;
     m_Animation -> SetProps("Countess_Attack3", 1, 10, 150);   
 }
@@ -246,5 +253,102 @@ void Countess_Vampire::Update(float dt){
 }
 
 void Countess_Vampire::Clean(){
-    TextureManager::GetInstance() -> Clean();
+}
+
+BloodCharges::BloodCharges(Properties* props, bool Dir, int Type, int ATK, bool Down) : Character(props){
+    m_HP = 1;
+    m_ATK = ATK;
+
+    m_Collider = new Collider;
+    m_Collider -> SetBuffer(0, 0, 0, 0);
+ 
+    m_RigidBody = new RigidBody();
+    m_RigidBody -> setGravity(0);
+
+    m_Animation = new AnimationHandler();
+
+    m_FaceDir = Dir;
+
+    m_Down = Down;
+
+    m_Type = Type;
+    switch (m_Type)
+    {
+    case 1:
+        m_Animation -> SetProps("Countess_Particle1", 1, 3, 100);
+        break;
+    case 2:
+        m_Animation -> SetProps("Countess_Particle2", 1, 3, 100);
+        break;
+    case 3:
+        m_Animation -> SetProps("Countess_Particle3", 1, 3, 100);
+        break;
+    default:
+        break;
+    }
+}
+
+void BloodCharges::Draw(){
+    m_Animation -> Draw(m_Transform -> X, m_Transform -> Y, m_Width, m_Height, m_Dir[m_FaceDir]);
+}
+
+void BloodCharges::Right(){
+    m_RigidBody -> ApplyForceX(5.0f);
+}
+
+void BloodCharges::Left(){
+    m_RigidBody -> ApplyForceX(-5.0f);
+}
+
+void BloodCharges::Down(){
+    m_RigidBody -> ApplyForceY(10.0f);
+}
+
+void BloodCharges::Update(float dt){
+    // m_RigidBody -> UnsetForce();
+    
+    if (m_Down){
+        Down();
+    }
+    else {
+        if (m_FaceDir == 1){
+            Right();
+        }
+        else {
+            Left();
+        }
+    }
+
+    m_RigidBody -> Update(dt);
+    m_Transform -> X += m_RigidBody -> Position().X;
+    m_Transform -> Y += m_RigidBody -> Position().Y;
+
+    switch (m_Type)
+    {
+    case 1:
+        m_Collider -> SetBox(m_Transform -> X + 6, m_Transform -> Y + 18, 26, 10);
+        break;
+    case 2:
+        m_Collider -> SetBox(m_Transform -> X + 25, m_Transform -> Y + 17, 11, 12);
+        break;
+    case 3:
+        m_Collider -> SetBox(m_Transform -> X + 10, m_Transform -> Y + 20, 32, 8);
+        break;
+    default:
+        break;
+    }
+
+    Players::GetInstance() -> checkHit(m_Collider -> GetBox(), m_ATK);
+    if (Players::GetInstance() -> checkCollision(m_Collider -> GetBox())){
+        m_HP = 0;
+    }  
+    Players::GetInstance() -> DealDMG();
+    m_Animation -> Update(dt);
+
+    m_Origin -> X = m_Transform -> X + m_Width/2;
+    m_Origin -> Y = m_Transform -> Y + m_Height/2;
+}
+
+void BloodCharges::Clean(){
+
 }

@@ -1,6 +1,7 @@
 #include "Characters/Skeleton.h"
 #include "Camera/Camera.h"
 #include <SDL2/SDL.h>
+#include <cmath>
 
 #define right 1
 #define left -1
@@ -21,7 +22,7 @@ Skeleton::Skeleton(Properties* props) : Character(props){
     m_RigidBody = new RigidBody();
     m_RigidBody -> setGravity(5.0f);
     
-    m_FaceDir = 1;
+    m_FaceDir = 0;
     
     m_isAlive = true;
 
@@ -49,7 +50,7 @@ void Skeleton::RunLeft(){
     if (m_isGrounded)
         m_FaceDir = 0;
     m_RigidBody -> ApplyForceY(0);
-    m_RigidBody -> ApplyForceX(7 * left);
+    m_RigidBody -> ApplyForceX(3 * left);
     if (m_isRunning == false)
         m_Animation -> AnimationStart();
     m_isRunning = true;
@@ -64,7 +65,7 @@ void Skeleton::RunRight(){
     if (m_isGrounded)
         m_FaceDir = 1;
     m_RigidBody -> ApplyForceY(0);
-    m_RigidBody -> ApplyForceX(7 * right);
+    m_RigidBody -> ApplyForceX(3 * right);
     if (m_isRunning == false)
         m_Animation -> AnimationStart();
     m_isRunning = true;
@@ -109,7 +110,7 @@ void Skeleton::Attack1(){
     if (m_isAttacking1 == false)
         m_Animation -> AnimationStart();
     m_isAttacking1 = true;
-    m_Animation -> SetProps("Skeleton_Attack1", 1, 5, 170);
+    m_Animation -> SetProps("Skeleton_Attack1", 1, 4, 250);
 }
 void Skeleton::Attack2(){
     if (m_isAttacking2 == false && isAttacking()) return;
@@ -117,7 +118,7 @@ void Skeleton::Attack2(){
     if (m_isAttacking2 == false)
         m_Animation -> AnimationStart();
     m_isAttacking2 = true;
-    m_Animation -> SetProps("Skeleton_Attack2", 1, 6, 200);
+    m_Animation -> SetProps("Skeleton_Attack2", 1, 6, 250);
 }
 void Skeleton::Attack3(){
     if (m_isAttacking3 == false && isAttacking()) return;
@@ -125,7 +126,7 @@ void Skeleton::Attack3(){
     if (m_isAttacking3 == false)
         m_Animation -> AnimationStart();
     m_isAttacking3 = true;
-    m_Animation -> SetProps("Skeleton_Attack3", 1, 4, 140);   
+    m_Animation -> SetProps("Skeleton_Attack3", 1, 4, 250);   
 }
 
 void Skeleton::Die(){
@@ -145,7 +146,6 @@ void Skeleton::Hurt(){
 }
 
 void Skeleton::Update(float dt){
-
 
     // SDL_Log("die here? X: %f Y: %f", m_Transform -> X, m_Transform -> Y);
     // SDL_Log("Force X: %f Y: %f", m_RigidBody ->Force().X, m_RigidBody->Force().Y);
@@ -175,37 +175,87 @@ void Skeleton::Update(float dt){
         if (m_Animation -> ACycle() && m_isHurting == true){
             m_isHurting = false;
         }
-        if (!m_isHurting){
 
+        if (!m_isHurting == true){
+        
             if (m_Animation -> ACycle() && isAttacking() == true){
                 stopAttack();
                 Players::GetInstance() -> DealDMG();
             }
 
             //move
-
-            Idling();
-            
-            //move
-            
             //attack
+            int py = Players::GetInstance() -> GetPlayer(0) ->GetOrigin() -> Y;
+            if (abs(py - m_Origin -> Y) >= 45){
+                Idling();
+            }
+            else {
+                int px = Players::GetInstance() -> GetPlayer(0) ->GetOrigin() -> X;
+                if (abs(px - m_Origin -> X) >= 45){
+                    if (m_isFalling == true){
+                        Idling();
+                    }
+                    else{
+                        if (px > m_Origin -> X){
+                            RunRight();
+                        }
+                        else {
+                            RunLeft();
+                        }
+                    }
+                }
+                else {     
+                    if (m_isFalling == true){
+                        Idling();
+                    }
+                    else{
+                        if (px > m_Origin -> X){
+                            m_FaceDir = 1;
+                        }
+                        else {
+                            m_FaceDir = 0;
+                        }
+                        int rnd = Globals::GetInstance() -> Random(1, 120);
+                        switch (rnd)
+                        {
+                        case 1:
+                            if (isAttacking() == false)
+                                Attack1();
+                            break;
+                        case 2:
+                            if (isAttacking() == false)
+                                Attack2();
+                            break;
+                        case 3:
+                            if (isAttacking() == false)
+                                Attack3();
+                            break;
+                        default:
+                            Idling();
+                            break;
+                        }
+                    }
+                }
+            }
 
             if (m_isAttacking1 == true){
                 Attack1();
                 SDL_Rect Hitbox = {(int)m_Transform -> X + 100 - (!m_FaceDir) * 100, (int)m_Transform -> Y + 50, 35, 60};
-                Players::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);
+                if (m_Animation -> getFrame() >= 4)
+                    Players::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod1);
             }
             if (m_isAttacking2 == true){
                 Attack2();
                 SDL_Rect Hitbox = {(int)m_Transform -> X + 50 - (!m_FaceDir) * 50, (int)m_Transform -> Y + 50, 70, 50};
-                Players::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod3);
+                if (m_Animation -> getFrame() >= 4)
+                    Players::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod2);
             }
             if (m_isAttacking3 == true){
                 Attack3();
                 SDL_Rect Hitbox = {(int)m_Transform -> X + 75 - (!m_FaceDir) * 75, (int)m_Transform -> Y + 60, 45, 65};
-                Players::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod3);
+                if (m_Animation -> getFrame() >= 3)
+                    Players::GetInstance() -> checkHit(Hitbox, m_ATK * m_AttackMod3);
             }
-
         }
         if (m_RigidBody -> Velocity().Y > 0 && !m_isGrounded){
             m_isFalling = true;
@@ -224,6 +274,9 @@ void Skeleton::Update(float dt){
         m_Transform -> X = m_LastSafePosition.X;
     }
     if (Players::GetInstance() -> checkCollision(m_Collider -> GetBox())){
+        m_Transform -> X = m_LastSafePosition.X;
+    }
+    if (Skeletons::GetInstance() -> checkCollision(m_Collider -> GetBox())){
         m_Transform -> X = m_LastSafePosition.X;
     }
     if (Countesses::GetInstance() -> checkCollision(m_Collider -> GetBox())){
@@ -246,6 +299,10 @@ void Skeleton::Update(float dt){
         m_isGrounded = true;
         m_Transform -> Y = m_LastSafePosition.Y;
     }
+    if (Skeletons::GetInstance() -> checkCollision(m_Collider -> GetBox())){
+        m_isGrounded = true;
+        m_Transform -> Y = m_LastSafePosition.Y;
+    }
     if (Countesses::GetInstance() -> checkCollision(m_Collider -> GetBox())){
         m_isGrounded = true;
         m_Transform -> Y = m_LastSafePosition.Y;
@@ -260,5 +317,4 @@ void Skeleton::Update(float dt){
 }
 
 void Skeleton::Clean(){
-    TextureManager::GetInstance() -> Clean();
 }

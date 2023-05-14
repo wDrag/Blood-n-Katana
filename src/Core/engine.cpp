@@ -10,10 +10,15 @@
 #include "Map/MapParser.h"
 #include "Camera/Camera.h"
 #include "Inputs/Input.h"
+#include <random>
+#include <ctime>
 
 Engine* Engine::s_Instance = nullptr;
 
 bool Engine::Init(){
+
+    srand(time(NULL));
+
     if (SDL_Init(SDL_INIT_VIDEO)!= 0 && IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0){
         SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
         return false;
@@ -47,12 +52,10 @@ bool Engine::Init(){
     CM::GetInstance() -> StatsParser("src/Characters/GameStats.xml", "Countess");
     CM::GetInstance() -> StatsParser("src/Characters/GameStats.xml", "Skeleton");
 
-    CM::GetInstance() -> checkStats();
-
     Players::GetInstance() -> Spawn("Player_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX, Globals::GetInstance() -> StartingY);
     Countesses::GetInstance() -> Spawn("Countess_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingXB, Globals::GetInstance() -> StartingYB);
     Skeletons::GetInstance() -> Spawn("Skeleton_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> StartingX + 50, Globals::GetInstance() -> StartingY - 200);
-
+   
     Camera::GetInstance() -> setTarget(Players::GetInstance() ->GetPlayer(0) -> GetOrigin());
 
     // TextureManager::GetInstance() -> checkMap();
@@ -66,6 +69,7 @@ void Engine::Clean(){
     Players::GetInstance() -> Clean();
     Countesses::GetInstance() -> Clean();
     Skeletons::GetInstance() -> Clean();
+    BloodChargesManager::GetInstance() -> Clean();
     CM::GetInstance() -> StatsClean();
     Quit();
 }
@@ -86,6 +90,7 @@ void Engine::Update(){
     Countesses::GetInstance() -> Update(dt);
     Skeletons::GetInstance() -> Update(dt);
     Camera::GetInstance() -> Update(dt);
+    BloodChargesManager::GetInstance() -> Update(dt);
 }
 void Engine::Render(){
     SDL_SetRenderDrawColor(m_Renderer, 8, 14, 33, 1);
@@ -94,6 +99,7 @@ void Engine::Render(){
     Players::GetInstance() -> Draw();
     Countesses::GetInstance() -> Draw();
     Skeletons::GetInstance() -> Draw();
+    BloodChargesManager::GetInstance() -> Draw();
     SDL_RenderPresent(m_Renderer);
 }
 void Engine::Events(){

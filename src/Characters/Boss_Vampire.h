@@ -76,8 +76,6 @@ class Countess_Vampire : public Character{
         
         bool m_FaceDir;//0 for left, 1 for Right 
         SDL_RendererFlip m_Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
-        
-        std::string m_State;
 
 };
 
@@ -140,6 +138,66 @@ class Countesses{
     private: 
         static Countesses* s_Instance;
         std::vector<Countess_Vampire*> m_Countesses;
+};
+
+class BloodCharges : public Character{
+    public:
+        BloodCharges(Properties* props, bool Dir, int Type, int ATK, bool Down);
+        virtual void Draw();
+        virtual void Update(float dt);
+        virtual void Clean();
+        void Right();
+        void Left();
+        void Down();
+        friend class BloodChargesManager;
+    private:
+        int m_HP;
+        int m_ATK;
+        int m_Down;
+        Collider* m_Collider;
+        AnimationHandler* m_Animation;
+        RigidBody* m_RigidBody;
+
+        int m_Type;
+
+        bool m_FaceDir;//0 for left, 1 for Right
+        SDL_RendererFlip m_Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
+};
+
+class BloodChargesManager{
+    public:
+        static BloodChargesManager* GetInstance(){
+            return s_Instance = (s_Instance != nullptr)? s_Instance : new BloodChargesManager();
+        }
+
+        void Spawn(std::string startingState, int x, int y, int w, int h, bool Dir, int Type, int ATK, bool Down){
+            BloodCharges* Charge = new BloodCharges(new Properties(startingState, x, y, w, h), Dir, Type, ATK, Down);
+            m_Charges.push_back(Charge);
+        }
+        void Clean(){
+            for (int i = 0; i < m_Charges.size(); i++){
+                m_Charges[i] -> Clean();
+            }
+        }
+        void Update(float dt){
+            for (int i = m_Charges.size() - 1; i >= 0; i--){
+                m_Charges[i] -> Update(dt);
+                if (m_Charges[i] -> m_HP <= 0){
+                    m_Charges.erase(m_Charges.begin() + i);
+                }
+            }
+        }
+        void Draw(){
+            for (int i = 0; i < m_Charges.size(); i++){
+                m_Charges[i] -> Draw();
+            }
+        }
+        BloodCharges* GetCharge(int index){
+            return m_Charges[index];
+        }
+    private: 
+        static BloodChargesManager* s_Instance;
+        std::vector<BloodCharges*> m_Charges;
 };
 
 #endif

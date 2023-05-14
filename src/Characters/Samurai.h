@@ -81,8 +81,6 @@ class Samurai : public Character{
         
         bool m_FaceDir;//0 for left, 1 for Right 
         SDL_RendererFlip m_Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
-        
-        std::string m_State;
 
 };
 
@@ -94,9 +92,10 @@ class Players{
 
         void checkHit(SDL_Rect HitBox, int damage){
             for (int i = 0; i < m_Players.size(); i++){
-                if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Players[i] -> m_Collider->GetBox()))
+                if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Players[i] -> m_Collider->GetBox())){
                     m_Players[i] -> m_DamageTaking = damage;
                     m_Players[i] -> Hurt();
+                }
             }
         }
 
