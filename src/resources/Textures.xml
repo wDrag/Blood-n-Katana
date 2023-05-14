@@ -36,4 +36,12 @@
         <texture id="Skeleton_Attack2" source="src/resources/Skeleton/Attack_2.png"/>
         <texture id="Skeleton_Attack3" source="src/resources/Skeleton/Attack_3.png"/>
     </Skeleton>
+    <Button>
+        <texture id="B_Pause" source="src/resources/Button/pause.png"/>
+        <texture id="B_Play" source="src/resources/Button/play.png"/>
+        <texture id="B_Quit" source="src/resources/Button/quit.png"/>    
+        <texture id="B_Restart" source="src/resources/Button/restart.png"/>
+        <texture id="B_Sound" source="src/resources/Button/sound.png"/>
+        <texture id="B_Sound_Off" source="src/resources/Button/sound_off.png"/>
+    </Button>
 </Textures>

@@ -1,6 +1,7 @@
 #include "Characters/Boss_Vampire.h"
 #include "Camera/Camera.h"
 #include <SDL2/SDL.h>
+#include <cmath>
 
 #define right 1
 #define left -1
@@ -23,6 +24,9 @@ Countess_Vampire::Countess_Vampire(Properties* props) : Character(props){
     
     m_FaceDir = 0;
 
+    m_HP_Bar_MAX = {(int)m_Transform -> X + 15, (int)m_Transform -> Y + 30, 96, 8};
+    m_HP_Bar = m_HP_Bar_MAX;
+
     m_isAlive = true;
 
     int m_HP = CM::GetInstance()->GetStats("Countess").HP;
@@ -32,6 +36,10 @@ Countess_Vampire::Countess_Vampire(Properties* props) : Character(props){
 }
 
 void Countess_Vampire::Draw(){
+    SDL_SetRenderDrawColor(Engine::GetInstance() -> getRenderer(), 77, 21, 38, 255);
+    SDL_RenderFillRect(Engine::GetInstance() -> getRenderer(), &m_HP_Bar_MAX);
+    SDL_SetRenderDrawColor(Engine::GetInstance() -> getRenderer(), 186, 49, 33, 255);
+    SDL_RenderFillRect(Engine::GetInstance() -> getRenderer(), &m_HP_Bar);
     m_Animation -> Draw(m_Transform->X, m_Transform->Y, m_Width, m_Height, m_Dir[m_FaceDir]);
 
     // Vector2D cam = Camera::GetInstance() -> GetPosition();
@@ -48,7 +56,6 @@ void Countess_Vampire::RunLeft(){
     }
     if (m_isGrounded)
         m_FaceDir = 0;
-    m_RigidBody -> ApplyForceY(0);
     m_RigidBody -> ApplyForceX(10 * left);
     if (m_isRunning == false)
         m_Animation -> AnimationStart();
@@ -63,7 +70,6 @@ void Countess_Vampire::RunRight(){
     }
     if (m_isGrounded)
         m_FaceDir = 1;
-    m_RigidBody -> ApplyForceY(0);
     m_RigidBody -> ApplyForceX(10 * right);
     if (m_isRunning == false)
         m_Animation -> AnimationStart();
@@ -108,30 +114,38 @@ void Countess_Vampire::Attack1(){
     m_RigidBody -> UnsetForce();
     if (m_isAttacking1 == false){
         m_Animation -> AnimationStart();
-        BloodChargesManager::GetInstance() -> Spawn("Countess_Particle1", m_Transform -> X, m_Transform -> Y, Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, m_FaceDir, 1, m_ATK * m_AttackMod1, 0);
     }
     m_isAttacking1 = true;
-    m_Animation -> SetProps("Countess_Attack1", 1, 8, 150);
+    m_Animation -> SetProps("Countess_Attack1", 1, 8, 250);
 }
 void Countess_Vampire::Attack2(){
     if (m_isAttacking2 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
     if (m_isAttacking2 == false){
         m_Animation -> AnimationStart();
-        BloodChargesManager::GetInstance() -> Spawn("Countess_Particle1", m_Transform -> X, m_Transform -> Y, Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, m_FaceDir, 1, m_ATK * m_AttackMod1, 0);
     }
     m_isAttacking2 = true;
-    m_Animation -> SetProps("Countess_Attack2", 1, 7, 150);
+    m_Animation -> SetProps("Countess_Attack2", 1, 7, 250);
 }
+
+void Countess_Vampire::AttackEX(){
+    if (m_isAttackingEX == false && isAttacking()) return;
+    m_RigidBody -> UnsetForce();
+    if (m_isAttackingEX == false){
+        m_Animation -> AnimationStart();
+    }
+    m_isAttackingEX = true;
+    m_Animation -> SetProps("Countess_Attack2", 1, 7, 250);
+}
+
 void Countess_Vampire::Attack3(){
     if (m_isAttacking3 == false && isAttacking()) return;
     m_RigidBody -> UnsetForce();
     if (m_isAttacking3 == false){
         m_Animation -> AnimationStart();
-        BloodChargesManager::GetInstance() -> Spawn("Countess_Particle1", m_Transform -> X, m_Transform -> Y, Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, m_FaceDir, 1, m_ATK * m_AttackMod1, 0);
     }
     m_isAttacking3 = true;
-    m_Animation -> SetProps("Countess_Attack3", 1, 10, 150);   
+    m_Animation -> SetProps("Countess_Attack3", 1, 10, 300);   
 }
 
 void Countess_Vampire::Die(){
@@ -149,20 +163,26 @@ void Countess_Vampire::Hurt(){
 void Countess_Vampire::Update(float dt){
 
 
+
     // SDL_Log("die here? X: %f Y: %f", m_Transform -> X, m_Transform -> Y);
     // SDL_Log("Force X: %f Y: %f", m_RigidBody ->Force().X, m_RigidBody->Force().Y);
     // SDL_Log("Acceleration X: %f Y: %f", m_RigidBody ->Acceleration().X, m_RigidBody->Acceleration().Y);
     // SDL_Log("Velocity X: %f Y: %f", m_RigidBody ->Velocity().X, m_RigidBody->Velocity().Y);
     // SDL_Log("Rigid Body X: %f Y: %f", m_RigidBody ->Position().X, m_RigidBody->Position().Y);
-    
-    m_RigidBody -> UnsetForce();
 
     if (m_HP <= 0){
+        m_HP = 0;
         Die();
     }
     if (m_isDying == true){
         Die();
     }
+    Vector2D cam = Camera::GetInstance() -> GetPosition();
+
+    m_HP_Bar_MAX = {(int)(m_Transform -> X + 15 - cam.X), (int)(m_Transform -> Y + 30 - cam.Y), 96, 8};
+    m_HP_Bar = m_HP_Bar_MAX;
+   
+    m_HP_Bar.w = m_HP * m_HP_Bar_MAX.w / CM::GetInstance() -> GetStats("Countess").HP;
     if (m_Animation -> ACycle() && m_isDying == true){
         m_isDying = false;
         m_isAlive = false;
@@ -171,21 +191,69 @@ void Countess_Vampire::Update(float dt){
 
     if (!m_isDying){
 
-        if (Input::getInstance() -> GetKeyDown(SDL_SCANCODE_SPACE)){
-            Jump(dt);
-        }
+        m_RigidBody -> UnsetForce();    
 
         if (m_Animation -> ACycle() && isAttacking() == true){
+            if (m_isAttacking1){
+                BloodChargesManager::GetInstance() -> Spawn("Countess_Particle1", Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, m_Transform -> X, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> Y + 25, m_FaceDir, 1, m_ATK * m_AttackMod1, 0);
+            }
+
+            if (m_isAttacking2){
+                BloodChargesManager::GetInstance() -> Spawn("Countess_Particle2", Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> X - 25, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> Y - 250, m_FaceDir, 2, m_ATK * m_AttackMod2, 1);
+            }
+
+            if (m_isAttacking3){
+                int xOffset = 0;
+                if (m_FaceDir == 0)
+                    xOffset = -400;
+                else if (m_FaceDir == 1)
+                    xOffset = 400;
+                BloodChargesManager::GetInstance() -> Spawn("Countess_Particle3", Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> X + xOffset, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> Y + 30, m_FaceDir, 3, m_ATK * m_AttackMod3, 0);
+            }
+
+            if (m_isAttackingEX){
+                // BloodChargesManager::GetInstance() -> Spawn("Countess_Particle2", Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> X - 70, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> Y - 250, m_FaceDir, 2, m_ATK * m_AttackMod2, 1);
+                BloodChargesManager::GetInstance() -> Spawn("Countess_Particle2", Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> X - 50, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> Y - 250, m_FaceDir, 2, m_ATK * m_AttackMod2, 1);
+                BloodChargesManager::GetInstance() -> Spawn("Countess_Particle2", Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> X - 25, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> Y - 250, m_FaceDir, 2, m_ATK * m_AttackMod2, 1);
+                BloodChargesManager::GetInstance() -> Spawn("Countess_Particle2", Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> X, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> Y - 250, m_FaceDir, 2, m_ATK * m_AttackMod2, 1);
+                BloodChargesManager::GetInstance() -> Spawn("Countess_Particle2", Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> X + 25, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> Y - 250, m_FaceDir, 2, m_ATK * m_AttackMod2, 1);
+                // BloodChargesManager::GetInstance() -> Spawn("Countess_Particle2", Globals::GetInstance() -> ProjectileFrameSizeX, Globals::GetInstance() -> ProjectileFrameSizeY, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> X + 75, Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> Y - 250, m_FaceDir, 2, m_ATK * m_AttackMod2, 1);
+            }
             stopAttack();
         }
 
         //move
-        if (Input::getInstance() -> GetKeyDown(SDL_SCANCODE_SPACE) == false){
-           Idling();   
+
+        int px = Players::GetInstance() -> GetPlayer(0) -> GetOrigin() -> X;
+        if (m_isGrounded){
+            if (px > m_Origin -> X){
+                m_FaceDir = 1;
+            }
+            else {
+                m_FaceDir = 0;
+            }
+            int rnd = Globals::GetInstance() -> Random(1, 50);
+            switch (rnd)
+            {
+            case 1:
+                if (isAttacking() == false && abs(px - m_Origin -> X) >= 300)
+                    Attack1();
+                break;
+            case 2:
+                if (isAttacking() == false)
+                    Globals::GetInstance() -> Random (0, 20) == 0 ? AttackEX() :
+                    Attack2();
+                break;
+            case 3:
+                if (isAttacking() == false)
+                    Attack3();
+                break;
+            default:
+                Idling();
+                break;
+            }
         }
-        
-        //move
-        
+
         //attack
 
         if (m_isAttacking1 == true){
@@ -312,10 +380,16 @@ void BloodCharges::Update(float dt){
     }
     else {
         if (m_FaceDir == 1){
-            Right();
+            if (m_Type == 3)
+                Left();
+            else
+                Right();
         }
         else {
-            Left();
+            if (m_Type == 3)
+                Right();
+            else
+                Left();
         }
     }
 
@@ -338,11 +412,10 @@ void BloodCharges::Update(float dt){
         break;
     }
 
-    Players::GetInstance() -> checkHit(m_Collider -> GetBox(), m_ATK);
+    Players::GetInstance() -> checkHitProjectile(m_Collider -> GetBox(), m_ATK);
     if (Players::GetInstance() -> checkCollision(m_Collider -> GetBox())){
         m_HP = 0;
     }  
-    Players::GetInstance() -> DealDMG();
     m_Animation -> Update(dt);
 
     m_Origin -> X = m_Transform -> X + m_Width/2;

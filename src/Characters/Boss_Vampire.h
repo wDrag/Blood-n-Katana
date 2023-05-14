@@ -29,14 +29,15 @@ class Countess_Vampire : public Character{
         void Idling();
         void Jump(float dt);
         inline bool isAttacking(){
-            return (m_isAttacking1 || m_isAttacking2 || m_isAttacking3);
+            return (m_isAttackingEX || m_isAttacking1 || m_isAttacking2 || m_isAttacking3);
         }
         inline void stopAttack(){
-            m_isAttacking1 = m_isAttacking2 = m_isAttacking3 = false;
+            m_isAttackingEX = m_isAttacking1 = m_isAttacking2 = m_isAttacking3 = false;
         }
         void Attack1();
         void Attack2();
         void Attack3();
+        void AttackEX();
         void Die();
         void Hurt();
         
@@ -50,6 +51,7 @@ class Countess_Vampire : public Character{
         bool m_isAttacking1 = false;
         bool m_isAttacking2 = false;
         bool m_isAttacking3 = false;
+        bool m_isAttackingEX = false;
 
         bool m_isDying = false;
         bool m_isAlive = true;
@@ -73,6 +75,9 @@ class Countess_Vampire : public Character{
         Collider* m_Collider;
         AnimationHandler* m_Animation;
         RigidBody* m_RigidBody;
+
+        SDL_Rect m_HP_Bar;
+        SDL_Rect m_HP_Bar_MAX;
         
         bool m_FaceDir;//0 for left, 1 for Right 
         SDL_RendererFlip m_Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};

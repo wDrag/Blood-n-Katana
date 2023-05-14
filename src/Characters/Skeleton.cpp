@@ -28,18 +28,27 @@ Skeleton::Skeleton(Properties* props) : Character(props){
 
     int m_HP = CM::GetInstance()->GetStats("Skeleton").HP;
 
+    m_HP_Bar_MAX = {(int)m_Transform -> X + 15, (int)m_Transform -> Y + 30, 96, 8};
+    m_HP_Bar = m_HP_Bar_MAX;
+
+
     m_Animation = new AnimationHandler();
     Idling();
 }
 
 void Skeleton::Draw(){
+    SDL_SetRenderDrawColor(Engine::GetInstance() -> getRenderer(), 77, 21, 38, 255);
+    SDL_RenderFillRect(Engine::GetInstance() -> getRenderer(), &m_HP_Bar_MAX);
+    SDL_SetRenderDrawColor(Engine::GetInstance() -> getRenderer(), 255, 206, 0, 255);
+    SDL_RenderFillRect(Engine::GetInstance() -> getRenderer(), &m_HP_Bar);
+
     m_Animation -> Draw(m_Transform->X, m_Transform->Y, m_Width, m_Height, m_Dir[m_FaceDir]);
 
-    Vector2D cam = Camera::GetInstance() -> GetPosition();
-    SDL_Rect box = m_Collider -> GetBox();
-    box.x -= cam.X;
-    box.y -= cam.Y;
-    SDL_RenderDrawRect(Engine::GetInstance() -> getRenderer(), &box);
+    // Vector2D cam = Camera::GetInstance() -> GetPosition();
+    // SDL_Rect box = m_Collider -> GetBox();
+    // box.x -= cam.X;
+    // box.y -= cam.Y;
+    // SDL_RenderDrawRect(Engine::GetInstance() -> getRenderer(), &box);
 }
 
 void Skeleton::RunLeft(){
@@ -147,6 +156,7 @@ void Skeleton::Hurt(){
 
 void Skeleton::Update(float dt){
 
+
     // SDL_Log("die here? X: %f Y: %f", m_Transform -> X, m_Transform -> Y);
     // SDL_Log("Force X: %f Y: %f", m_RigidBody ->Force().X, m_RigidBody->Force().Y);
     // SDL_Log("Acceleration X: %f Y: %f", m_RigidBody ->Acceleration().X, m_RigidBody->Acceleration().Y);
@@ -156,11 +166,18 @@ void Skeleton::Update(float dt){
     m_RigidBody -> UnsetForce();
 
     if (m_HP <= 0){
+        m_HP = 0;
         Die();
     }
     if (m_isDying == true){
         Die();
     }
+    Vector2D cam = Camera::GetInstance() -> GetPosition();
+
+    m_HP_Bar_MAX = {(int)(m_Transform -> X + 15 - cam.X), (int)(m_Transform -> Y + 30 - cam.Y), 96, 8};
+    m_HP_Bar = m_HP_Bar_MAX;
+    
+    m_HP_Bar.w = m_HP * m_HP_Bar_MAX.w / CM::GetInstance() -> GetStats("Skeleton").HP;
     if (m_Animation -> ACycle() && m_isDying == true){
         m_isDying = false;
         m_isAlive = false;

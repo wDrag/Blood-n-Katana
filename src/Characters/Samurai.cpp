@@ -12,7 +12,7 @@ Players* Players::s_Instance = nullptr;
 Samurai::Samurai(Properties* props) : Character(props){
 
     m_JumpTime = Globals::GetInstance() -> JUMP_TIME;
-    m_JumpForce = Globals::GetInstance() -> JUMP_FORCE;
+    m_JumpForce = Globals::GetInstance() -> JUMP_FORCE * 1.2;
 
     m_Collider = new Collider;
     m_Collider -> SetBuffer(0, 0, 0, 0);
@@ -28,19 +28,28 @@ Samurai::Samurai(Properties* props) : Character(props){
 
     int m_HP = CM::GetInstance()->GetStats("Samurai").HP;
     
+    m_HP_Bar_MAX = {(int)m_Transform -> X + 15, (int)m_Transform -> Y + 30, 96, 8};
+    m_HP_Bar = m_HP_Bar_MAX;
+
+    
     m_Animation = new AnimationHandler();
 
     Idling();
 }
 
 void Samurai::Draw(){
+    SDL_SetRenderDrawColor(Engine::GetInstance() -> getRenderer(), 77, 21, 38, 255);
+    SDL_RenderFillRect(Engine::GetInstance() -> getRenderer(), &m_HP_Bar_MAX);
+    SDL_SetRenderDrawColor(Engine::GetInstance() -> getRenderer(), 34, 68, 51, 255);
+    SDL_RenderFillRect(Engine::GetInstance() -> getRenderer(), &m_HP_Bar);
+
     m_Animation -> Draw(m_Transform->X, m_Transform->Y, m_Width, m_Height, m_Dir[m_FaceDir]);
 
-    Vector2D cam = Camera::GetInstance() -> GetPosition();
-    SDL_Rect box = m_Collider -> GetBox();
-    box.x -= cam.X;
-    box.y -= cam.Y;
-    SDL_RenderDrawRect(Engine::GetInstance() -> getRenderer(), &box);
+    // Vector2D cam = Camera::GetInstance() -> GetPosition();
+    // SDL_Rect box = m_Collider -> GetBox();
+    // box.x -= cam.X;
+    // box.y -= cam.Y;
+    // SDL_RenderDrawRect(Engine::GetInstance() -> getRenderer(), &box);
 }
 
 void Samurai::RunLeft(){
@@ -158,7 +167,6 @@ void Samurai::Hurt(){
 
 void Samurai::Update(float dt){
 
-    SDL_Log("Samurai HP: %d", m_HP);
 
     // SDL_Log("die here? X: %f Y: %f", m_Transform -> X, m_Transform -> Y);
     // SDL_Log("Force X: %f Y: %f", m_RigidBody ->Force().X, m_RigidBody->Force().Y);
@@ -167,14 +175,17 @@ void Samurai::Update(float dt){
     // SDL_Log("Rigid Body X: %f Y: %f", m_RigidBody ->Position().X, m_RigidBody->Position().Y);
     
     m_RigidBody -> UnsetForce();
-    
-    if (Input::getInstance() -> GetKeyDown(SDL_SCANCODE_X)){
-        m_HP = 0;
-    }
 
     if (m_HP <= 0){
+        m_HP = 0;
         Die();
     }
+    Vector2D cam = Camera::GetInstance() -> GetPosition();
+
+    m_HP_Bar_MAX = {(int)(m_Transform -> X + 15 - cam.X), (int)(m_Transform -> Y + 30 - cam.Y), 96, 8};
+    m_HP_Bar = m_HP_Bar_MAX;
+    
+    m_HP_Bar.w = m_HP * m_HP_Bar_MAX.w / CM::GetInstance() -> GetStats("Samurai").HP;
     if (m_isDying == true){
         Die();
     }

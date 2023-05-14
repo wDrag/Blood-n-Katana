@@ -76,6 +76,9 @@ class Skeleton : public Character{
         AnimationHandler* m_Animation;
         RigidBody* m_RigidBody;
         
+        SDL_Rect m_HP_Bar;
+        SDL_Rect m_HP_Bar_MAX;
+        
         bool m_FaceDir;//0 for left, 1 for Right 
         SDL_RendererFlip m_Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
 

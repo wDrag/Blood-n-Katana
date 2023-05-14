@@ -19,8 +19,13 @@ bool Engine::Init(){
 
     srand(time(NULL));
 
-    if (SDL_Init(SDL_INIT_VIDEO)!= 0 && IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0){
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)!= 0 && IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0){
         SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
+        return false;
+    }
+
+    if (TTF_Init() == -1){
+        SDL_Log("Failed to initialize TTF: %s", SDL_GetError());
         return false;
     }
 

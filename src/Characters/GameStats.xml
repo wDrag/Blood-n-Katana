@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Stats>
     <Samurai>
-        <Stats HP="100" ATK="10"/>
+        <Stats HP="120" ATK="10"/>
         <Attack_1 mode="melee" mod = "1.0"/>
         <Attack_2 mode="melee" mod = "1.5"/>
         <Attack_3 mode="melee" mod = "0.8"/>
     </Samurai>
     <Countess>
-        <Stats HP="1000" ATK = "20"/>
+        <Stats HP="1000" ATK = "10"/>
         <Attack_1 mode="ranged" mod = "1.0"/>
         <Attack_2 mode="ranged" mod = "0.8"/>
         <Attack_3 mode="ranged" mod = "1.5"/>

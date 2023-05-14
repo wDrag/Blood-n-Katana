@@ -78,6 +78,9 @@ class Samurai : public Character{
         Collider* m_Collider;
         AnimationHandler* m_Animation;
         RigidBody* m_RigidBody;
+
+        SDL_Rect m_HP_Bar;
+        SDL_Rect m_HP_Bar_MAX;
         
         bool m_FaceDir;//0 for left, 1 for Right 
         SDL_RendererFlip m_Dir[2] = {SDL_FLIP_HORIZONTAL, SDL_FLIP_NONE};
@@ -93,8 +96,22 @@ class Players{
         void checkHit(SDL_Rect HitBox, int damage){
             for (int i = 0; i < m_Players.size(); i++){
                 if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Players[i] -> m_Collider->GetBox())){
-                    m_Players[i] -> m_DamageTaking = damage;
-                    m_Players[i] -> Hurt();
+                    if (!m_Players[i] -> m_isProtecting){
+                        m_Players[i] -> m_DamageTaking = damage;
+                        m_Players[i] -> Hurt();
+                    }
+                    else m_Players[i] -> m_DamageTaking = damage/4;
+                }
+            }
+        }
+        void checkHitProjectile(SDL_Rect HitBox, int damage){
+            for (int i = 0; i < m_Players.size(); i++){
+                if (CollisionHandler::GetInstance() -> CheckCollision(HitBox, m_Players[i] -> m_Collider->GetBox())){
+                    if (!m_Players[i] -> m_isProtecting){
+                        m_Players[i] -> m_HP -= damage;
+                        m_Players[i] -> Hurt();
+                    }
+                    else m_Players[i] -> m_HP -= damage/4;
                 }
             }
         }
