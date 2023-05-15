@@ -90,7 +90,7 @@ Thể loại game Roguelike kinh điển
 - [Parser TinyXML](https://github.com/leethomason/tinyxml2)
 - [Madsycode](https://www.youtube.com/playlist?list=PL-K0viiuJ2RctP5nlJlqmHGeh66-GOZR_)
 - [craftpix.net](https://craftpix.net/)
-- Nhạc [Gokuraku Joudo - GARNiDELiA] (https://music.youtube.com/watch?v=-JzIBUHot4M&feature=share)
+- Nhạc [Gokuraku Joudo - GARNiDELiA](https://music.youtube.com/watch?v=-JzIBUHot4M&feature=share)
 
 ## Liên Hệ
 
