@@ -84,6 +84,8 @@ void Engine::Quit(){
     SDL_DestroyRenderer(m_Renderer);
     SDL_DestroyWindow(m_Window);
     IMG_Quit();
+    TTF_Quit();
+    Mix_Quit();
     SDL_Quit();
 }
 

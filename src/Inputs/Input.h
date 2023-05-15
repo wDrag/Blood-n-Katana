@@ -2,6 +2,7 @@
 #define INPUT_H
 
 #include <SDL2/SDL.h>
+#include "Physics/Vector2D.h"
 
 
 enum Axis {HORIZONTAL, VERTICAL};
@@ -19,13 +20,16 @@ class Input{
         void LockKey();
         void UnlockKey();
 
+        bool GetMouseButtonDown(int button);
+
         int GetAxisKey(Axis axis);
         int GetAttackKey();
+        Vector2D GetMousePos();
 
     private:
         static bool m_KeyLocked;
         Input(){};
-        void KeyUp();
+        // void KeyUp();
         void KeyDown();
         static Input* s_Instance;
         const Uint8* m_Keystates;

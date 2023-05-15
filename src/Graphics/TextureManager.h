@@ -17,6 +17,7 @@ class TextureManager{
         void Drop(std::string id);
         void Clean();
         void Draw(std::string id, int x, int y, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE);   
+        void TextureManager::DrawButton(std::string id, int x, int y, int width, int height, int dstWidth, int dstHeight, SDL_RendererFlip flip = SDL_FLIP_NONE);
         void DrawFrame(std::string id, int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
         void DrawTile(std::string tilesetID, int tileSize, int x, int y, int row, int col, SDL_RendererFlip flip = SDL_FLIP_NONE);
         // void checkMap();

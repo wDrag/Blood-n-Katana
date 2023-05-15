@@ -16,12 +16,22 @@ void Input::Listen(){
                 if (event.key.repeat == 0)
                     KeyDown(); 
                 break;
-            case SDL_KEYUP : 
-                if (event.key.repeat == 0)
-                    KeyUp(); 
-                break;
+            // case SDL_KEYUP : 
+            //     if (event.key.repeat == 0)
+            //         KeyUp(); 
+            //     break;
         }
     }
+}
+
+Vector2D Input::GetMousePos(){
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    return Vector2D(x, y);
+}
+
+bool Input::GetMouseButtonDown(int button){
+    return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(button);
 }
 
 void Input::LockKey(){
@@ -49,9 +59,9 @@ bool Input::NoKeyDown(){
     return true;
 }
 
-void Input::KeyUp(){
-    m_Keystates = SDL_GetKeyboardState(nullptr);
-}
+// void Input::KeyUp(){
+//     m_Keystates = SDL_GetKeyboardState(nullptr);
+// }
 
 void Input::KeyDown(){
     m_Keystates = SDL_GetKeyboardState(nullptr);

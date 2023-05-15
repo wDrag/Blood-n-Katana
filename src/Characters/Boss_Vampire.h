@@ -187,7 +187,8 @@ class BloodChargesManager{
         void Update(float dt){
             for (int i = m_Charges.size() - 1; i >= 0; i--){
                 m_Charges[i] -> Update(dt);
-                if (m_Charges[i] -> m_HP <= 0){
+                SDL_Rect box = m_Charges[i] -> m_Collider -> GetBox();
+                if (m_Charges[i] -> m_HP <= 0 || CollisionHandler::GetInstance() -> OOB(box)){
                     m_Charges.erase(m_Charges.begin() + i);
                 }
             }

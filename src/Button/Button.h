@@ -6,8 +6,68 @@
 #include <string>
 #include <vector>
 #include "Inputs/Input.h"
-#include "Objects/GameObject.h"
+#include "Camera/Camera.h"
 #include "Graphics/TextureManager.h"
 
+enum button_state{
+    NORMAL = 0,
+    HOVER = 1,
+    CLICKED = 2
+};
+
+class Button{
+    public:
+        Button(int x, int y, std::string textureID){
+            m_Position.x = x;
+            m_Position.y = y;
+            m_Position.w = 214;
+            m_Position.h = 215;
+            m_TextureID = textureID;
+            m_State = NORMAL;
+        }
+
+        void Draw(){
+            Vector2D cam = Camera::GetInstance() -> GetPosition();
+            TextureManager::GetInstance() -> DrawButton(m_TextureID, m_Position.x - cam.X, m_Position.y - cam.Y, m_Position.w, m_Position.h, 100, 100);
+        }
+
+        void Update(){
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+            if (x < m_Position.x + m_Position.w && x > m_Position.x && y < m_Position.y + m_Position.h && y > m_Position.y){
+                if (Input::getInstance() -> GetMouseButtonDown(1)){
+                    m_State = CLICKED;
+                }else{
+                    m_State = HOVER;
+                }
+            }else{
+                m_State = NORMAL;
+            }
+        }
+
+        button_state GetState(){
+            return m_State;
+        }
+
+        friend class Buttons;
+    private:
+        button_state m_State;
+        SDL_Rect m_Position;
+        std::string m_TextureID;
+};
+
+class Buttons{
+    public:
+        static Buttons* GetInstance(){
+            return s_Instance = (s_Instance != nullptr) ? s_Instance : new Buttons();
+        }
+        void AddButton(int x, int y, std::string textureID);
+        void Draw();
+        void Update();
+    private:
+        Buttons(){};
+        static Buttons* s_Instance;
+        std::vector<Button*> m_Buttons;
+};
 
 #endif

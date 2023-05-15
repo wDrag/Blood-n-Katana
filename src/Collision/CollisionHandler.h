@@ -15,6 +15,7 @@ class CollisionHandler{
 
         bool CheckCollision(SDL_Rect a, SDL_Rect b);
         bool MapCollision(SDL_Rect a);
+        bool OOB(SDL_Rect a);
 
     private:
         CollisionHandler();

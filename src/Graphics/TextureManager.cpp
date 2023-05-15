@@ -49,6 +49,12 @@ void TextureManager::Draw(std::string id, int x, int y, int width, int height, S
     SDL_RenderCopyEx(Engine::GetInstance() -> getRenderer(), m_TextureMap[id], &srcRect, &destRect, 0, nullptr, flip);
 }
 
+void TextureManager::DrawButton(std::string id, int x, int y, int width, int height, int dstWidth, int dstHeight, SDL_RendererFlip flip){
+    SDL_Rect srcRect = {0, 0, width, height};
+    SDL_Rect destRect = {x, y, dstWidth, dstHeight};
+    SDL_RenderCopyEx(Engine::GetInstance() -> getRenderer(), m_TextureMap[id], &srcRect, &destRect, 0, nullptr, flip);
+}
+
 void TextureManager::DrawFrame(std::string id, int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip){
     SDL_Rect srcRect = {width * frame, height * (row - 1), width, height};
     Vector2D cam = Camera::GetInstance() -> GetPosition();

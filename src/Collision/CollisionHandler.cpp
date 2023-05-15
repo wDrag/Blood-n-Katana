@@ -14,6 +14,16 @@ bool CollisionHandler::CheckCollision(SDL_Rect a, SDL_Rect b){
     return (x_overlaps && y_overlaps);
 }
 
+bool CollisionHandler::OOB(SDL_Rect a){
+    int TileSize = 48;
+    int RowCount = 20;
+    int ColCount = 60;
+
+    if (a.x < 0 || a.x + a.w > ColCount * TileSize || a.y < 0 || a.y + a.h > RowCount * TileSize)
+        return true;
+    else return false;
+}
+
 bool CollisionHandler::MapCollision(SDL_Rect a){
     int TileSize = 48;
     int RowCount = 20;

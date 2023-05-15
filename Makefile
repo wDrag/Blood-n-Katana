@@ -5,6 +5,7 @@ OBJS += src/Map/TileLayer.cpp src/TinyXML/tinystr.cpp src/TinyXML/tinyxml.cpp
 OBJS += src/TinyXML/tinyxmlparser.cpp src/TinyXML/tinyxmlerror.cpp
 OBJS += src/Map/MapParser.cpp src/Camera/Camera.cpp src/Collision/CollisionHandler.cpp
 OBJS += src/Globals/Globals.cpp src/Characters/Chars_Management.cpp
+OBJS += src/Button/Button.cpp
 
 OBJS += src/resources/ICON/BND.res
 #Characters lib
