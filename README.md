@@ -74,9 +74,9 @@ Thể loại game Roguelike kinh điển
 - Cải thiện chuyển động và điều khiển của bot để thông minh hơn
 - Cải thiện chuyển động của người chơi
 
-##Kết luận
+## Kết luận
 
-###Việc tự thực 1 dự án lập trình như thế này giúp mình mở mang thêm nhiều kiến thức:
+### Việc tự thực 1 dự án lập trình như thế này giúp mình mở mang thêm nhiều kiến thức:
 - Hiểu được mô hình phát triển 1 phần mềm kiểu thác nước: Phân tích, thiết kế, lập trình, kiểm thử, bảo trì.
 - Cách dùng git và github
 - Tư duy đặt ra và giải quyết vấn đề
