@@ -17,6 +17,9 @@ enum button_state{
 
 class Button{
     public:
+        Button(){
+            m_State = NORMAL;
+        }
         Button(int x, int y, std::string textureID){
             m_Position.x = x;
             m_Position.y = y;
@@ -26,15 +29,18 @@ class Button{
             m_State = NORMAL;
         }
 
+        void ChangeTexture(std::string textureID){
+            m_TextureID = textureID;
+        }
+
         void Draw(){
-            Vector2D cam = Camera::GetInstance() -> GetPosition();
-            TextureManager::GetInstance() -> DrawButton(m_TextureID, m_Position.x - cam.X, m_Position.y - cam.Y, m_Position.w, m_Position.h, 100, 100);
+           TextureManager::GetInstance() -> DrawButton(m_TextureID, m_Position.x, m_Position.y, m_Position.w, m_Position.h, 100, 100);
         }
 
         void Update(){
             int x, y;
             SDL_GetMouseState(&x, &y);
-            if (x < m_Position.x + m_Position.w && x > m_Position.x && y < m_Position.y + m_Position.h && y > m_Position.y){
+            if (x < m_Position.x + 100 && x > m_Position.x && y < m_Position.y + 100 && y > m_Position.y){
                 if (Input::getInstance() -> GetMouseButtonDown(1)){
                     m_State = CLICKED;
                 }else{
@@ -49,25 +55,9 @@ class Button{
             return m_State;
         }
 
-        friend class Buttons;
     private:
         button_state m_State;
         SDL_Rect m_Position;
         std::string m_TextureID;
 };
-
-class Buttons{
-    public:
-        static Buttons* GetInstance(){
-            return s_Instance = (s_Instance != nullptr) ? s_Instance : new Buttons();
-        }
-        void AddButton(int x, int y, std::string textureID);
-        void Draw();
-        void Update();
-    private:
-        Buttons(){};
-        static Buttons* s_Instance;
-        std::vector<Button*> m_Buttons;
-};
-
 #endif

@@ -16,10 +16,14 @@ void Input::Listen(){
                 if (event.key.repeat == 0)
                     KeyDown(); 
                 break;
-            // case SDL_KEYUP : 
-            //     if (event.key.repeat == 0)
-            //         KeyUp(); 
+            // case SDL_MOUSEBUTTONDOWN :
+            //     int x, y;
+            //     SDL_GetMouseState(&x, &y);
+            //     SDL_Log("Mouse Clicked at: %d, %d", x, y);
             //     break;
+            default :
+                KeyDown();
+                break;
         }
     }
 }

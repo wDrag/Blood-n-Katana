@@ -23,8 +23,6 @@ Samurai::Samurai(Properties* props) : Character(props){
     m_FaceDir = 1;
 
     m_isAlive = true;
-    
-    Input::getInstance() -> UnlockKey();
 
     int m_HP = CM::GetInstance()->GetStats("Samurai").HP;
     
@@ -166,8 +164,6 @@ void Samurai::Hurt(){
 }
 
 void Samurai::Update(float dt){
-
-
     // SDL_Log("die here? X: %f Y: %f", m_Transform -> X, m_Transform -> Y);
     // SDL_Log("Force X: %f Y: %f", m_RigidBody ->Force().X, m_RigidBody->Force().Y);
     // SDL_Log("Acceleration X: %f Y: %f", m_RigidBody ->Acceleration().X, m_RigidBody->Acceleration().Y);
@@ -212,12 +208,13 @@ void Samurai::Update(float dt){
                 Countesses::GetInstance() -> DealDMG();
             }
 
+            if (m_isFalling) Input::getInstance() -> LockKey();
+            else Input::getInstance() -> UnlockKey();
+
             if (Input::getInstance() -> NoKeyDown()){
                 Idling();
             }
 
-            if (m_isFalling) Input::getInstance() -> LockKey();
-            else Input::getInstance() -> UnlockKey();
 
             //move
 

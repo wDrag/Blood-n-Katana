@@ -125,6 +125,7 @@ class Skeletons{
             for (int i = 0; i < m_Skeletons.size(); i++){
                 m_Skeletons[i] -> Clean();
             }
+            m_Skeletons.clear();
         }
         void Update(float dt){
             for (int i = m_Skeletons.size() - 1; i >= 0; i--){
@@ -142,6 +143,11 @@ class Skeletons{
         Skeleton* GetSkeleton(int index){
             return m_Skeletons[index];
         }
+
+        int GetSkeletonsNum(){
+            return m_Skeletons.size();
+        }
+
     private: 
         static Skeletons* s_Instance;
         std::vector<Skeleton*> m_Skeletons;

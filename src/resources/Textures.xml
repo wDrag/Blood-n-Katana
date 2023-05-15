@@ -44,4 +44,9 @@
         <texture id="B_Sound" source="src/resources/Button/sound.png"/>
         <texture id="B_Sound_Off" source="src/resources/Button/sound_off.png"/>
     </Button>
+    <Other>
+        <texture id="Background" source="src/resources/OtherIMG/DungeonBackground.png"/>
+        <texture id="YouDied" source="src/resources/OtherIMG/YouDied.png"/>
+        <texture id="YouWin" source="src/resources/OtherIMG/Victory.png"/>
+    </Other>
 </Textures>

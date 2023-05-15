@@ -140,6 +140,7 @@ class Players{
             for (int i = 0; i < m_Players.size(); i++){
                 m_Players[i] -> Clean();
             }
+            m_Players.clear();
         }
         void Update(float dt){
             for (int i = m_Players.size() - 1; i >= 0; i--){
@@ -156,6 +157,9 @@ class Players{
         }
         Samurai* GetPlayer(int index){
             return m_Players[index];
+        }
+        int GetPlayersNum(){
+            return m_Players.size();
         }
     private: 
         static Players* s_Instance;

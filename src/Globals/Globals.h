@@ -15,8 +15,8 @@ class Globals{
         const int ProjectileFrameSizeY = 48;
         const int StartingX = 200;
         const int StartingY = 600;
-        const int StartingXB = 1840;
-        const int StartingYB = 540;
+        const int StartingXB = 2200;
+        const int StartingYB = 200;
         const int SCREEN_WIDTH = 1440;
         const int SCREEN_HEIGHT = 864;
 

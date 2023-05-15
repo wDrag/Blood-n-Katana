@@ -5,6 +5,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+#include <vector>
+#include "GameStates/GameState.h"
 
 #include "Map/GameMap.h"
 
@@ -20,6 +22,11 @@ class Engine{
         void Update();
         void Render();
         void Events();
+        
+        void PopState();
+        void PushState(GameState* state);
+
+        void ChangeState(GameState* state);
 
         inline bool isRunning() { return m_isRunning; }
         inline SDL_Renderer* getRenderer() { return m_Renderer; }
@@ -31,6 +38,11 @@ class Engine{
         Engine(){}
         static Engine* s_Instance;
         GameMap* m_LevelMap;
+        std::vector<GameState*> m_GameStates;
+        int curState = -1;
+        Button* B_Mute;
+        bool m_isMuted;
+        Mix_Music* m_Music;
 };
 
 #endif

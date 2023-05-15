@@ -123,6 +123,7 @@ class Countesses{
             for (int i = 0; i < m_Countesses.size(); i++){
                 m_Countesses[i] -> Clean();
             }
+            m_Countesses.clear();
         }
         void Update(float dt){
             for (int i = m_Countesses.size() - 1; i >= 0; i--){
@@ -139,6 +140,10 @@ class Countesses{
         }
         Countess_Vampire* GetCountess(int index){
             return m_Countesses[index];
+        }
+
+        int GetCountessesNum(){
+            return m_Countesses.size();
         }
     private: 
         static Countesses* s_Instance;
@@ -183,6 +188,7 @@ class BloodChargesManager{
             for (int i = 0; i < m_Charges.size(); i++){
                 m_Charges[i] -> Clean();
             }
+            m_Charges.clear();
         }
         void Update(float dt){
             for (int i = m_Charges.size() - 1; i >= 0; i--){
