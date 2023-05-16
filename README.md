@@ -33,12 +33,19 @@
 ## Hướng Dẫn Chơi
 
 ### CONTROL:      
+
 *A(Left Arrow) to Run left
+
 *D(Right Arrow) to Run Right
+
 *W(Up Arrow) to Jump
+
 *S(Down Arrow) to Protect
+
 *J(NP1) to Normal Attack
+
 *K(NP2) to Heavy Attack
+
 *L(NP3) to Quick Attack
 
                                                          
