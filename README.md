@@ -18,6 +18,7 @@
 ### Windows
 1. Kéo dự án về tài khoản Github cá nhân bằng Fork
 2. Clone dự án về máy tính local bằng lệnh `git clone https://github.com/[USER_NAME]/Blood-n-Katana`
+2*. Bạn có thể tải trực tiếp về nếu không muốn sử dụng github và command line
 3. Tại đây bạn có 2 lựa chọn 
   - Mở thư mục và chạy tệp thực thi (BND.exe)
   - Sử dụng source code và compile:
