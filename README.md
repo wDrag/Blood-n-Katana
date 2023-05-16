@@ -34,32 +34,32 @@
 
 ### CONTROL:      
 
-*A(Left Arrow) to Run left
+* A(Left Arrow) to Run left
 
-*D(Right Arrow) to Run Right
+* D(Right Arrow) to Run Right
 
-*W(Up Arrow) to Jump
+* W(Up Arrow) to Jump
 
-*S(Down Arrow) to Protect
+* S(Down Arrow) to Protect
 
-*J(NP1) to Normal Attack
+* J(NP1) to Normal Attack
 
-*K(NP2) to Heavy Attack
+* K(NP2) to Heavy Attack
 
-*L(NP3) to Quick Attack
+* L(NP3) to Quick Attack
 
                                                          
 ### GAMEPLAY:                             
-*Objective:
+* Objective:
     -Kill the Countess
     -Kill 10 Skeletons
-*Game:
+* Game:
     -The Skeletons spawn randomly on the map
     -After you kill the 4th Skeleton the Countess will spawn
     -The Skeletons will spawn randomly around the Countess
     -You will lose if your HP reach 0
     
-##Tính năng
+## Tính năng
 Bắt đầu game mới
 Tạm dừng nhạc
 Tạm dừng game
