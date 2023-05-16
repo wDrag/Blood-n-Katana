@@ -52,10 +52,11 @@ void Play::Update(float dt){
             numBoss++;
         }
         int rnd = Globals ::GetInstance() -> Random(1, 500);
-        if ((rnd == 123||Skeletons::GetInstance() -> GetSkeletonsNum() == 0) && numSkeletonSpawned <= 6){
+        if ((rnd == 123||Skeletons::GetInstance() -> GetSkeletonsNum() == 0) && numSkeletonSpawned <= 10){
             int spwnX = Globals::GetInstance() -> Random(100, 2600);
             if (numBoss > 0)
-                spwnX = Globals::GetInstance() -> Random(-400, 400) + Countesses::GetInstance() -> GetCountess(0) -> GetOrigin() -> X;
+                while (spwnX < Countesses::GetInstance() -> GetCountess(0) -> GetOrigin() -> X - 150 || spwnX > Countesses::GetInstance() -> GetCountess(0) -> GetOrigin() -> X + 150)
+                  spwnX = Globals::GetInstance() -> Random(-400, 400) + Countesses::GetInstance() -> GetCountess(0) -> GetOrigin() -> X;
             int spwnY = 250;
             Skeletons::GetInstance() -> Spawn("Skeleton_Idle", Globals::GetInstance() -> HumanoidFrameSize, Globals::GetInstance() -> HumanoidFrameSize, spwnX, spwnY);
             numSkeletonSpawned++;
