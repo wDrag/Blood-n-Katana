@@ -24,7 +24,7 @@
     + Cài đặt [Visual Studio Code](https://code.visualstudio.com/download) 
     + Thư viện SDL2 đã được cài đặt sẵn bản 64bit, bản 32bit ở trong thư mục x86_bin
     + Parser TinyXML đã được cài đặt sẵn
-    + Cài đặt [Mingw] 32 hoặc 64 bit(https://www.mingw-w64.org/downloads/)
+    + Cài đặt [Mingw](https://www.mingw-w64.org/downloads/) 32 hoặc 64 bit
     + Compile code sử dụng lệnh `mingw32-make`
 
 ### MacOS và Linux
